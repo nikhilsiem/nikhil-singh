@@ -54,6 +54,17 @@ export default function Hero() {
       <style>{`
         @keyframes blink { 50% { border-color: transparent; } }
         @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-18px); } }
+
+        /* Mobile responsive overrides */
+        @media (max-width: 640px) {
+          #hero { padding: 0 18px !important; }
+          .hero-content { margin-left: 0 !important; max-width: 100% !important; }
+          .hero-content h1 { font-size: clamp(34px, 10vw, 56px) !important; line-height: 1.03 !important; }
+          .hero-content p, .hero-content .typewriter { font-size: 15px !important; }
+          .hero-actions { flex-direction: column; gap: 12px !important; }
+          .hero-available { margin-bottom: 18px !important; }
+          .floating-badge, .stat-card { display: none !important; }
+        }
       `}</style>
 
       {/* Interactive particle canvas — the "gif replacement" */}
@@ -67,6 +78,7 @@ export default function Hero() {
 
       {/* Floating badge */}
       <motion.div
+        className="floating-badge"
         style={{
           position: 'absolute', top: '22%', right: '8%', zIndex: 2,
           background: 'rgba(110,231,183,0.07)', border: '1px solid rgba(110,231,183,0.2)',
@@ -83,6 +95,7 @@ export default function Hero() {
 
       {/* Floating stat card */}
       <motion.div
+        className="stat-card"
         style={{
           position: 'absolute', bottom: '22%', right: '6%', zIndex: 2,
           background: 'rgba(8,8,8,0.55)', border: '1px solid #1e1e1e',
@@ -101,10 +114,11 @@ export default function Hero() {
       </motion.div>
 
       {/* Main content */}
-      <div style={{ maxWidth: 900, position: 'relative', zIndex: 2, marginLeft: '6vw' }}>
+      <div className="hero-content" style={{ maxWidth: 900, position: 'relative', zIndex: 2, marginLeft: '6vw' }}>
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.6 }}
           style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 32 }}
+          className="hero-available"
         >
           <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--accent)', boxShadow: '0 0 10px var(--accent)' }} />
           <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-secondary)' }}>Available for new opportunities</span>
@@ -129,6 +143,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55, duration: 0.6 }}
           style={{ fontSize: 'clamp(18px, 2.5vw, 28px)', fontFamily: 'var(--font-display)', fontWeight: 400, marginBottom: 32, minHeight: '1.4em' }}
+          className="typewriter"
         >
           <TypewriterRoles />
         </motion.div>
@@ -144,6 +159,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.85, duration: 0.6 }}
           style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}
+          className="hero-actions"
         >
           <a
             href="#experience"

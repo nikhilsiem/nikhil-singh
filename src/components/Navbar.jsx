@@ -15,6 +15,14 @@ export default function Navbar() {
 
   return (
     <>
+      <style>{`
+        @media (max-width: 640px) {
+          .nav-actions { display: none !important; }
+          .nav-hamburger { display: block !important; }
+        }
+        .nav-hamburger { display: none; background: transparent; border: none; color: var(--text-primary); }
+        .nav-mobile { position: absolute; top: 64px; right: 20px; background: rgba(8,8,8,0.9); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 200; }
+      `}</style>
       <motion.nav
         style={{
           position: 'fixed',
@@ -39,7 +47,11 @@ export default function Navbar() {
           NS<span style={{ color: 'var(--accent)' }}>.</span>
         </a>
 
-        <div style={{ display: 'flex', gap: '36px', alignItems: 'center' }}>
+        <button aria-label="Toggle menu" className="nav-hamburger" onClick={() => setMenuOpen(s => !s)} style={{ fontSize: 20 }}>
+          ☰
+        </button>
+
+        <div className="nav-actions" style={{ display: 'flex', gap: '36px', alignItems: 'center' }}>
           {links.map(link => (
             <a
               key={link}
@@ -76,6 +88,16 @@ export default function Navbar() {
             Hire me
           </a>
         </div>
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} className="nav-mobile">
+              {links.map(l => (
+                <a key={l} href={`#${l.toLowerCase()}`} onClick={() => setMenuOpen(false)} style={{ color: 'var(--text-primary)', padding: '6px 8px' }}>{l}</a>
+              ))}
+              <a href="mailto:s.nikhil2023@gmail.com" style={{ color: 'var(--text-primary)', padding: '6px 8px', fontWeight: 700 }}>Hire me</a>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </motion.nav>
     </>
   );

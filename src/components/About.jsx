@@ -26,6 +26,15 @@ function fadeUp(delay = 0) {
 export default function About() {
   return (
     <section id="about" style={{ padding: '120px 40px', maxWidth: 1200, margin: '0 auto' }}>
+      <style>{`
+        @media (max-width: 768px) {
+          #about { padding: 48px 18px !important; max-width: 100% !important; }
+          .about-grid { display: block !important; }
+          .about-bio { width: 100%; }
+          .about-stats { width: 100%; margin-top: 20px; }
+          .about-stats .stats-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
       <motion.div {...fadeUp()} style={{ marginBottom: 80 }}>
         <div className="section-label">About</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1, maxWidth: 700 }}>
@@ -34,9 +43,9 @@ export default function About() {
         </h2>
       </motion.div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
+      <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'start' }}>
         {/* Left: bio */}
-        <motion.div {...fadeUp(0.1)}>
+        <motion.div className="about-bio" {...fadeUp(0.1)}>
           <p style={{ fontSize: 16, lineHeight: 1.85, color: 'var(--text-secondary)', marginBottom: 24 }}>
             With over 6 years across fintech, enterprise SaaS, and AI-powered platforms, I've led frontend builds at
             companies like Mastercard, Spring Financial, and SiteRecon. My work has touched millions of users through 
@@ -72,8 +81,8 @@ export default function About() {
         </motion.div>
 
         {/* Right: stats */}
-        <motion.div {...fadeUp(0.2)}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 40 }}>
+        <motion.div className="about-stats" {...fadeUp(0.2)}>
+          <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 40 }}>
             {stats.map((s, i) => (
               <motion.div
                 key={s.label}

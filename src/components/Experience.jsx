@@ -87,6 +87,19 @@ export default function Experience() {
 
   return (
     <section id="experience" style={{ padding: '120px 40px', maxWidth: 1200, margin: '0 auto' }}>
+      <style>{`
+        .exp-mobile-tabs { display: none; }
+
+        @media (max-width: 768px) {
+          #experience { padding: 48px 12px !important; max-width: 100% !important; }
+          .exp-grid { display: block !important; }
+          .exp-left { display: none !important; }
+          .exp-right { padding: 20px !important; }
+          .exp-mobile-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+          .exp-mobile-tabs button { flex: 0 0 calc(50% - 8px); min-width: 0; white-space: normal; text-align: left; }
+          .exp-mobile-tabs button div { color: var(--text-primary); }
+        }
+      `}</style>
       <motion.div {...fadeUp()} style={{ marginBottom: 64 }}>
         <div className="section-label">Experience</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px, 5vw, 56px)', fontWeight: 700, letterSpacing: '-0.03em', lineHeight: 1.1 }}>
@@ -94,9 +107,9 @@ export default function Experience() {
         </h2>
       </motion.div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 32 }}>
+      <div className="exp-grid" style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 32 }}>
         {/* Left nav */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div className="exp-left" style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
           {experiences.map((e, i) => (
             <motion.button
               key={i}
@@ -132,6 +145,16 @@ export default function Experience() {
               </div>
               <div style={{ fontSize: 10, color: 'var(--text-muted)', marginTop: 4 }}>{e.period}</div>
             </motion.button>
+          ))}
+        </div>
+
+        {/* Mobile tabs (shown only on small screens) */}
+        <div className="exp-mobile-tabs">
+          {experiences.map((e, i) => (
+            <button key={i} onClick={() => setActive(i)} style={{ padding: '10px 12px', borderRadius: 10, background: active===i ? 'var(--bg-card)' : 'transparent', border: active===i ? `1px solid ${e.color}33` : '1px solid transparent', cursor: 'pointer' }}>
+              <div style={{ fontSize: 13, fontWeight: 700 }}>{e.company}</div>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{e.period}</div>
+            </button>
           ))}
         </div>
 
