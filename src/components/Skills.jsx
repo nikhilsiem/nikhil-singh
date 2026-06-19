@@ -29,7 +29,7 @@ const skillGroups = [
   {
     label: 'Databases & Infra',
     color: '#F87171',
-    skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Firebase'],
+    skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Firebase', 'supabase'],
   },
 ];
 
