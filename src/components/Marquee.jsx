@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 
 const items = [
   'React', '·', 'Vue 3', '·', 'Angular', '·', 'TypeScript', '·',
-  'AI Tooling', '·', 'Cursor', '·', 'Node.js', '·', 'GraphQL', '·',
+  'Next.js', '·', 'LLM Agents', '·', 'Claude Code', '·', 'Cursor', '·', 'Node.js', '·', 'GraphQL', '·',
   'PostgreSQL', '·', 'Framer Motion', '·', 'Core Web Vitals', '·',
 ];
 
