@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-13T12:25:43.693340Z",
+  "title": "Design System: Nikhil Singh \u2014 Survey Sheet",
+  "extensions": {
+    "colorMeta": {
+      "drafting-ground": {
+        "role": "neutral",
+        "displayName": "Drafting Ground"
+      },
+      "parchment-ink": {
+        "role": "neutral",
+        "displayName": "Parchment Ink"
+      },
+      "survey-orange": {
+        "role": "primary",
+        "displayName": "Survey Orange"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (62% width)",
+        "purpose": "Name, section heads, entry and project names, closing email."
+      },
+      "parcel-title": {
+        "displayName": "Parcel title (75% width)",
+        "purpose": "Hero parcels and map-key terms."
+      },
+      "body": {
+        "displayName": "Body (100% width)",
+        "purpose": "Prose and lists, max ~72ch."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Load-time outline draw of solid parcels (1100ms, 110ms stagger) and the axis fade."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "1100px"
+      },
+      {
+        "name": "phone",
+        "value": "760px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one primary action (Email me).",
+      "html": "<a class=\"ds-btn\" href=\"#\">Email me</a>",
+      "css": ".ds-btn{display:inline-flex;padding:12px 18px;background:#ece6d6;color:#10120f;font:600 15px 'Archivo Variable',sans-serif;text-decoration:none;transition:background-color .16s}.ds-btn:hover{background:#ff5a1f;color:#1a0b04}"
+    },
+    {
+      "name": "Parcel",
+      "kind": "card",
+      "description": "Plotted outline box; solid = shipped at work, dashed = own, orange = live.",
+      "html": "<a class=\"ds-parcel\" href=\"#\"><h3>Scout AI map</h3><p>SiteRecon, 2025 to now.</p></a>",
+      "css": ".ds-parcel{display:block;max-width:300px;padding:12px 14px;border:1.5px solid #ff5a1f;background:#10120f;color:#ece6d6;text-decoration:none;font-family:'Archivo Variable',sans-serif}.ds-parcel h3{margin:0;font-stretch:75%;font-weight:700;font-size:22px;text-transform:uppercase;color:#ff5a1f}.ds-parcel p{margin:4px 0 0;font-size:12.5px;color:#948f80}"
+    },
+    {
+      "name": "Dimension line",
+      "kind": "custom",
+      "description": "Metric drawn as a bracket with tick ends.",
+      "html": "<p class=\"ds-dim\"><b>$30K+</b><span>new subscriptions in 3 months</span></p>",
+      "css": ".ds-dim{position:relative;display:flex;gap:10px;height:22px;max-width:360px;align-items:flex-end;font:12px 'Archivo Variable',sans-serif;color:#ff5a1f}.ds-dim::before{content:'';position:absolute;inset:auto 0 0 0;height:9px;border:1px solid #ff5a1f;border-top:0}.ds-dim b,.ds-dim span{position:relative;bottom:14px}.ds-dim span{color:#c9c2b0}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "description": "Ruled box of text links; current section in orange.",
+      "html": "<nav class=\"ds-nav\"><a aria-current=\"true\">Work</a><a>Projects</a><a>Contact</a></nav>",
+      "css": ".ds-nav{display:inline-flex;gap:4px;padding:4px;border:1px solid #2c3127;background:#10120f;font:13px 'Archivo Variable',sans-serif}.ds-nav a{padding:6px 10px;color:#c9c2b0}.ds-nav a[aria-current]{color:#ff5a1f}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Survey Sheet",
+    "overview": "The portfolio is one survey sheet: lettered axis, numbered rows, work plotted as parcels, outcomes drawn as dimension lines, and a cursor that measures.",
+    "keyCharacteristics": [
+      "Green-black drafting ground",
+      "Archivo at 62% width as the image",
+      "One signal colour for live and measured things",
+      "Flat line-work, no shadows"
+    ],
+    "rules": [
+      {
+        "name": "One signal",
+        "body": "Orange only for what is live or measured.",
+        "section": "colors"
+      },
+      {
+        "name": "No eyebrows",
+        "body": "Headings stand alone; metadata lives in title blocks and axes.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Express metrics as dimension lines",
+      "Draw icons as inline SVG at 1.5 stroke"
+    ],
+    "donts": [
+      "No shadows, chips, icon tiles, gradients or glow",
+      "No Unicode glyph icons",
+      "No scroll-triggered entrances"
+    ]
+  }
+}
