@@ -19,9 +19,9 @@ OWN-WORLD: Green-black drafting ground (#10120f) with a faint 12-column lettered
 
 STORY: First viewport: who (name), what (real-time + geospatial frontend), proof (Scout and DXP parcels with metric dimensions). Scroll: work schedule with outcomes, own-built projects, toolkit as a legend, close on a title block with email.
 
-FIRST VIEWPORT: Full-height sheet. Lettered column axis top, numbered rows left. Name at ~12vw condensed heavy, rows 1-3 left; one-line role below. Right half: Scout parcel (orange, live) with a "$30K+ in 3 months" dimension line, DXP parcel, Fixproof and Tayyari dashed parcels. Legend bottom-left; title block bottom-right carrying email (the primary action). Nav top-right.
+FIRST VIEWPORT (revised after user feedback that scattered parcels and the click-to-measure tool felt clumsy): full-height sheet. Name ~11vw condensed heavy top-left with one line and Email me; a ruled readout panel top-right showing the selected item; a 2020-to-now timeline across the bottom with a work lane and an own-work lane, items sized by duration. Nav top-right.
 
-FORM: Survey sheet, position 1 on the ordered list (Impeccable's pick, chosen by the user over the assigned departure board). seed:2c5cbe2cbe60324a. Signature interaction: the cursor is a surveyor's measuring tool: crosshair with live grid reference, click to drop a datum and a dimension line reads distance to the pointer. Motion grammar: grid and parcel outlines draw in once on load (stroke draw), nothing else animates on entry; reduced motion shows final state.
+FORM: Survey sheet, position 1 on the ordered list (Impeccable's pick, chosen by the user over the assigned departure board). seed:2c5cbe2cbe60324a. Signature interaction (revised): hovering the timeline shows a date hairline; hovering or focusing an item measures it (orange outline, length bracket) and updates the readout. Motion grammar: timeline items reveal left to right once on load; readout content fades up on change; reduced motion shows final state.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 

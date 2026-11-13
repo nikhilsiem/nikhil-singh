@@ -1,0 +1,90 @@
+import { useRef, useState } from 'react';
+import { Dim } from './Parcel';
+import Arrow from './Arrow';
+import { START, SPAN, MONTHS, pct } from '../timeline';
+
+export function Readout({ item }) {
+  return (
+    <aside className="readout" aria-live="polite" aria-label="Selected work">
+      <div key={item.id} className="readout-body">
+        <h2 className={`readout-title display${item.live ? ' live' : ''}`}>{item.title}</h2>
+        <dl className="readout-facts">
+          <div><dt>Role</dt><dd>{item.role}</dd></div>
+          <div><dt>Period</dt><dd>{item.period}</dd></div>
+          {item.length && <div><dt>Length</dt><dd>{item.length}</dd></div>}
+        </dl>
+        <p className="readout-summary">{item.summary}</p>
+        {item.dims.length > 0 && (
+          <div className="readout-dims">{item.dims.map(d => <Dim key={d.label} {...d} />)}</div>
+        )}
+        <a className="readout-link" href={`#${item.id}`}>Read the details<Arrow dir="down" /></a>
+      </div>
+    </aside>
+  );
+}
+
+export default function Timeline({ items, selected, onSelect }) {
+  const trackRef = useRef(null);
+  const [guide, setGuide] = useState(null);
+  const sel = items.find(i => i.id === selected);
+
+  const onMove = e => {
+    if (e.pointerType !== 'mouse') return;
+    const r = trackRef.current.getBoundingClientRect();
+    const t = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+    const n = Math.min(SPAN - 1, Math.floor(t * SPAN));
+    setGuide({ x: t * 100, label: `${MONTHS[n % 12]} ${START.y + Math.floor(n / 12)}` });
+  };
+
+  const years = Array.from({ length: 7 }, (_, k) => START.y + k);
+  const lane = name => items.filter(i => i.lane === name);
+
+  const Item = it => (
+    <button
+      key={it.id}
+      type="button"
+      className={`tl-item ${it.lane}${it.live ? ' live' : ''}${it.id === selected ? ' on' : ''}`}
+      style={{ '--l': pct(it.left), '--w': pct(it.width), '--r': it.row ?? 0 }}
+      aria-pressed={it.id === selected}
+      onPointerEnter={e => e.pointerType === 'mouse' && onSelect(it.id)}
+      onFocus={() => onSelect(it.id)}
+      onClick={() => onSelect(it.id)}
+    >
+      <span className="tl-label">{it.label}<small>{it.years}</small></span>
+      <span className="tl-track" aria-hidden="true"><span className="tl-bar" /></span>
+    </button>
+  );
+
+  return (
+    <div className="timeline">
+      <div className="tl-axis" aria-hidden="true">
+        {years.map(y => <span key={y} style={{ left: pct((y - START.y) * 12) }}>{y}</span>)}
+      </div>
+      <div
+        className="tl-plot"
+        ref={trackRef}
+        onPointerMove={onMove}
+        onPointerLeave={() => setGuide(null)}
+      >
+        <div className="tl-lane work">
+          <span className="tl-lane-name">At work</span>
+          {lane('work').map(Item)}
+        </div>
+        <div className="tl-lane own">
+          <span className="tl-lane-name">On my own</span>
+          {lane('own').map(Item)}
+        </div>
+        {sel?.length && (
+          <p key={sel.id} className="tl-length" style={{ '--l': pct(sel.left), '--w': pct(sel.width) }} aria-hidden="true">
+            <span>{sel.length}</span>
+          </p>
+        )}
+        {guide && (
+          <div className="tl-guide" style={{ left: `${guide.x}%` }} aria-hidden="true">
+            <span>{guide.label}</span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

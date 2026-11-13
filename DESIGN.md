@@ -33,6 +33,15 @@ typography:
     fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.55
+  ui:
+    fontFamily: "Archivo Variable, Archivo, system-ui, sans-serif"
+    fontSize: "14px"
+    fontWeight: 400
+    lineHeight: 1.5
+  caption:
+    fontFamily: "Archivo Variable, Archivo, system-ui, sans-serif"
+    fontSize: "12px"
+    fontWeight: 400
   label:
     fontFamily: "Archivo Variable, Archivo, system-ui, sans-serif"
     fontSize: "11px"
@@ -65,16 +74,16 @@ components:
 
 ## Overview
 
-The whole page is one survey sheet. A lettered column axis runs along the top, a numbered row gutter runs down the left for the full length of the page, and faint column lines carry through every section. Work is plotted on the sheet as parcels; outcomes are drawn as dimension lines with tick ends, never as stat tiles. The type is the image: Archivo at 62% width and heavy weight sets the name, section words and the closing email at poster scale on a green-black drafting ground.
+The whole page is one survey sheet: a framed drafting ground with faint column lines carried through every section. Outcomes are drawn as dimension lines with tick ends, never as stat tiles. The type is the image: Archivo at 62% width and heavy weight sets the name, section words and the closing email at poster scale.
 
-The sheet is also an instrument. On fine pointers the cursor becomes a surveyor's crosshair with a live grid reference, and a click drops a datum that measures the distance to the pointer. That measuring tool is the signature interaction; nothing else on the page competes with it.
+The first viewport is a measured plot of the career. A timeline runs 2020 to now along the bottom: x is time, one lane for jobs and one for work built on my own, each item sized to how long it ran. Hovering the timeline shows a date hairline; hovering or focusing an item outlines it in orange, draws its length beneath it, and fills the one readout panel beside the name with that item's role, period and metrics. Information appears in that fixed place, never scattered across the page.
 
 Mode: Experience. Ambition shows as commitment to the drawing conventions (title blocks, legends, parcels, dimensions), not as effects.
 
 ## Colors
 
 ### Primary
-- **Survey orange** `#ff5a1f`: reserved for what is live (the current job) and for measurements (dimension lines, the datum, focus rings, selection). Never decorative, never a fill for large areas.
+- **Survey orange** `#ff5a1f`: reserved for the selected item, the current job's "now", and measurements (dimension lines, length brackets, the date guide, focus rings, text selection). Never decorative, never a fill for large areas.
 
 ### Neutral
 - **Drafting ground** `#10120f`: the sheet. Green-black, not slate.
@@ -103,7 +112,7 @@ One family, Archivo Variable (self-hosted via @fontsource-variable/archivo, wdth
 
 ## Layout
 
-A 12-column grid (4 on phones) sits inside a framed sheet with a 28px row gutter and a 28px column axis. The row unit `--row` derives from viewport height so the 7-row hero sheet always fits the first viewport; a `.row-probe` element exposes its resolved pixel value to scripts. Content indents 0.4 column from the sheet edge. Hero parcels are placed by column/row coordinates (`--x`, `--y`, `--w`). Sections are separated by full-width rules; entries are two-zone (identity in columns 1–4, body in 5–12).
+A 12-column grid (4 on phones) sits inside a framed sheet. The hero fills the first viewport: name and readout in the top band (columns 1–7 and 8–12), the timeline along the bottom. Content indents 0.4 column from the sheet edge. `--row` (112px) is the vertical rhythm unit for section padding. Sections are separated by full-width rules; entries are two-zone (identity in columns 1–4, body in 5–12).
 
 ## Elevation & Depth
 
@@ -120,7 +129,7 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Quiet (copy address): transparent with a rule border; confirms in orange.
 
 ### Cards / Containers
-- **Parcel**: outlined box drawn in SVG. Solid = shipped at work; dashed (4 3) = built on my own; orange = live. Solid parcels draw their outline once on load (stroke-dashoffset, 1100ms ease-out, staggered).
+- **Parcel**: outlined box drawn in SVG, used for the project blocks. Dashed (4 3) = built on my own.
 - **Title block**: ruled grid of label/value cells, used in the hero (sheet details, email) and as the page's closing footer.
 
 ### Navigation
@@ -129,14 +138,18 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 ### Dimension line
 - Horizontal bracket with tick ends, value in orange bold, label in secondary ink. One oblique dimension in the hero runs between plotted items with SVG tick markers.
 
-### Measuring tool
-- Fine pointers ≥761px only. Orange crosshair hairlines, fixed readout with grid reference (column letter + row number), click to set a datum, Esc to clear. Ignores clicks on links and buttons.
+### Timeline and readout
+- Timeline: Jan 2020 to Dec 2026, one unit per month (`src/timeline.js`). Items are buttons positioned by `--l`/`--w`. Work items solid, own items dashed and stacked in the 2026 column. Hover (mouse) or focus selects; tap selects on touch.
+- Date guide: mouse only, a 60% orange hairline with an orange month label.
+- Selected item: orange outline and label, with a length bracket under it that scales in from the left.
+- Readout: ruled panel right of the name (below the timeline on phones), aria-live; title, role/period/length facts, one-line summary, up to two dimension lines, link to the details section. Content fades up 6px on change.
+- Phones: the timeline becomes a list of rows, each with a proportional bar on a 2020–2026 track.
 
 ## Do's and Don'ts
 
 ### Do:
 - Express every metric as a dimension line or a plotted label.
-- Keep orange for live and measured things only.
+- Keep orange for the selected, the current and the measured.
 - Draw icons as inline SVG at 1.5 stroke (see `Arrow.jsx`).
 - Theme browser surfaces: selection, focus ring and scrollbar come from the palette.
 
@@ -144,4 +157,5 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Don't add cards with shadows, chips, icon tiles, gradients or glow.
 - Don't put labels or numbers above headings.
 - Don't use Unicode glyphs as icons.
-- Don't animate entries on scroll; the load-time outline draw is the page's single motion moment.
+- Don't scatter information across the page; selection detail lives in the readout.
+- Don't animate entries on scroll; the timeline reveal on load and the readout change are the only motion.

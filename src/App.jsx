@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { person, work, projects, toolkit, notes } from './content';
 import Sheet from './components/Sheet';
 import Parcel, { Dim } from './components/Parcel';
-import SurveyTool from './components/SurveyTool';
+import Timeline, { Readout } from './components/Timeline';
+import { toItems } from './timeline';
 import Arrow from './components/Arrow';
-import ObliqueDim from './components/ObliqueDim';
 
 const sections = [
   { id: 'work', label: 'Work' },
@@ -52,61 +52,24 @@ function CopyEmail() {
 }
 
 function Hero() {
-  const scout = work[0];
+  const items = useMemo(() => toItems(work, projects), []);
+  const [selected, setSelected] = useState(items[0].id);
+  const item = items.find(i => i.id === selected);
   return (
     <header className="hero" id="top">
-      <div className="hero-id">
-        <h1 className="display">Nikhil<br />Singh</h1>
-        <p className="hero-line">{person.line}</p>
-        <div className="hero-cta">
-          <a className="btn" href={`mailto:${person.email}`}>Email me</a>
-          <a href={person.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-          <a href={person.github} target="_blank" rel="noreferrer">GitHub</a>
+      <div className="hero-top">
+        <div className="hero-id">
+          <h1 className="display">Nikhil<br />Singh</h1>
+          <p className="hero-line">{person.line}</p>
+          <div className="hero-cta">
+            <a className="btn" href={`mailto:${person.email}`}>Email me</a>
+            <a href={person.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+            <a href={person.github} target="_blank" rel="noreferrer">GitHub</a>
+          </div>
         </div>
+        <Readout item={item} />
       </div>
-
-      <div className="hero-plot">
-        <Parcel as="a" href="#siterecon" data-plot-id="scout" kind="live" i={0} style={{ '--x': 6.6, '--y': 1.25, '--w': 3.1 }}
-          dim={scout.dims[0]}>
-          <h3>Scout AI map</h3>
-          <p>SiteRecon, 2025 to now. An agent drives a live deck.gl map: 20+ real-time commands over SSE.</p>
-        </Parcel>
-        <Parcel as="a" href="#mastercard-dxp" i={1} style={{ '--x': 10, '--y': 2.35, '--w': 1.75 }}
-          dim={{ value: '200+', label: 'teams' }}>
-          <h3>DXP design system</h3>
-          <p>Mastercard. 120+ web components.</p>
-        </Parcel>
-        <Parcel as="a" href="#fixproof" kind="own" i={2} style={{ '--x': 7.25, '--y': 3.5, '--w': 2.35 }}>
-          <h3>Fixproof</h3>
-          <p>AI incident response that has to prove its fix.</p>
-        </Parcel>
-        <Parcel as="a" href="#tayyari" data-plot-id="tayyari" kind="own" i={3} style={{ '--x': 5.55, '--y': 4.7, '--w': 2.1 }}>
-          <h3>Tayyari</h3>
-          <p>Voice tutor in 7 Indian languages.</p>
-        </Parcel>
-        <Parcel as="a" href="#learn-this" kind="own" i={4} style={{ '--x': 8.15, '--y': 4.55, '--w': 2.0 }}>
-          <h3>Learn This</h3>
-          <p>Any topic into a course.</p>
-        </Parcel>
-      </div>
-
-      <ObliqueDim from="scout" to="tayyari" fromAt={0.22} toAt={0.55}
-        value={scout.dims[1].value} label="mobile measurements" />
-
-      <p className="legend">
-        <span><i className="live" />Live work</span>
-        <span><i />Shipped at work</span>
-        <span><i className="own" />Built on my own</span>
-        <span className="hint">Click anywhere on the sheet to measure</span>
-      </p>
-
-      <dl className="title-block" aria-label="Sheet details">
-        <div className="wide"><dt>Sheet NS-01</dt><dd><b>{person.name}, {person.role}</b></dd></div>
-        <div><dt>Location</dt><dd><b>{person.location}</b></dd></div>
-        <div><dt>Scale</dt><dd><b>1 : 6 years</b></dd></div>
-        <div><dt>Contact</dt><dd><a href={`mailto:${person.email}`}><b>{person.email}</b></a></dd></div>
-        <div><dt>Revised</dt><dd><b>Nov 2026</b></dd></div>
-      </dl>
+      <Timeline items={items} selected={selected} onSelect={setSelected} />
     </header>
   );
 }
@@ -230,7 +193,6 @@ export default function App() {
         </main>
         <Contact />
       </Sheet>
-      <SurveyTool />
     </>
   );
 }
