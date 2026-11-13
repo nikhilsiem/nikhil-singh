@@ -17,7 +17,11 @@ export function Readout({ item }) {
         {item.dims.length > 0 && (
           <div className="readout-dims">{item.dims.map(d => <Dim key={d.label} {...d} />)}</div>
         )}
-        <a className="readout-link" href={`#${item.id}`}>Read the details<Arrow dir="down" /></a>
+        {item.href ? (
+          <a className="readout-link" href={item.href} target="_blank" rel="noreferrer">View the code<Arrow /></a>
+        ) : (
+          <a className="readout-link" href={`#${item.id}`}>Read the details<Arrow dir="down" /></a>
+        )}
       </div>
     </aside>
   );
@@ -43,9 +47,10 @@ export default function Timeline({ items, selected, onSelect }) {
     <button
       key={it.id}
       type="button"
-      className={`tl-item ${it.lane}${it.live ? ' live' : ''}${it.id === selected ? ' on' : ''}`}
-      style={{ '--l': pct(it.left), '--w': pct(it.width), '--r': it.row ?? 0 }}
+      className={`tl-item ${it.lane}${it.kind ? ` ${it.kind}` : ''}${it.live ? ' live' : ''}${it.id === selected ? ' on' : ''}`}
+      style={{ '--l': pct(it.left), '--w': pct(it.width), '--r': it.row ?? 0, '--n': it.nudge ?? 0 }}
       aria-pressed={it.id === selected}
+      aria-label={it.kind === 'mark' ? `${it.label}, ${it.years}` : undefined}
       onPointerEnter={e => e.pointerType === 'mouse' && onSelect(it.id)}
       onFocus={() => onSelect(it.id)}
       onClick={() => onSelect(it.id)}
@@ -70,11 +75,11 @@ export default function Timeline({ items, selected, onSelect }) {
           <span className="tl-lane-name">At work</span>
           {lane('work').map(Item)}
         </div>
-        <div className="tl-lane own">
-          <span className="tl-lane-name">On my own</span>
+        <div className="tl-lane own" style={{ '--thread': pct(Math.min(...lane('own').map(i => i.left))) }}>
+          <span className="tl-lane-name">On my own · {lane('own').length} builds since {START.y + Math.floor(Math.min(...lane('own').map(i => i.left)) / 12)}</span>
           {lane('own').map(Item)}
         </div>
-        {sel?.length && (
+        {sel?.lane === 'work' && (
           <p key={sel.id} className="tl-length" style={{ '--l': pct(sel.left), '--w': pct(sel.width) }} aria-hidden="true">
             <span>{sel.length}</span>
           </p>

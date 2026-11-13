@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { person, work, projects, toolkit, notes } from './content';
+import { person, work, projects, builds, toolkit, notes } from './content';
 import Sheet from './components/Sheet';
 import Parcel, { Dim } from './components/Parcel';
 import Timeline, { Readout } from './components/Timeline';
 import { toItems } from './timeline';
+import useScrollPlot from './useScrollPlot';
 import Arrow from './components/Arrow';
 
 const sections = [
@@ -52,7 +53,7 @@ function CopyEmail() {
 }
 
 function Hero() {
-  const items = useMemo(() => toItems(work, projects), []);
+  const items = useMemo(() => toItems(work, projects, builds), []);
   const [selected, setSelected] = useState(items[0].id);
   const item = items.find(i => i.id === selected);
   return (
@@ -180,6 +181,7 @@ function Contact() {
 }
 
 export default function App() {
+  useScrollPlot();
   return (
     <>
       <a className="skip" href="#work">Skip to work</a>

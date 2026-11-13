@@ -41,7 +41,10 @@ export const work = [
     from: '2023-07',
     to: '2025-01',
     summary: 'A role-based Angular portal for partners and merchants, held to CI performance budgets.',
-    dims: [{ value: '0', label: 'releases with a performance regression, held by CI budgets' }],
+    dims: [
+      { value: 'Many → 1', label: 'legacy micro-frontends merged into one Angular codebase' },
+      { value: '4–6', label: 'engineers in the squad I ran sprint planning for' },
+    ],
     points: [
       'Engineered a role-based Angular portal for partners and merchants (onboarding, user management, dashboards) with route-level permission guards driven by the RBAC model.',
       'Re-architected modules around standalone components, lazy routes, OnPush and typed state, improving LCP, CLS and INP and shrinking the merchant portal bundle.',
@@ -90,6 +93,7 @@ export const work = [
 export const projects = [
   {
     id: 'fixproof',
+    from: '2026-09',
     name: 'Fixproof',
     aka: 'Signal',
     tagline: 'AI incident response that has to prove its fix.',
@@ -107,6 +111,7 @@ export const projects = [
   },
   {
     id: 'tayyari',
+    from: '2026-11',
     name: 'Tayyari',
     aka: 'Vigya',
     tagline: 'A voice tutor for JEE, NEET and Class 9–12, in seven Indian languages.',
@@ -124,6 +129,7 @@ export const projects = [
   },
   {
     id: 'learn-this',
+    from: '2026-06',
     name: 'Learn This',
     tagline: 'Turn any topic into a structured course.',
     dims: [{ value: '4–8', label: 'modules planned per course, with prerequisites' }],
@@ -138,6 +144,16 @@ export const projects = [
       { label: 'Source', href: 'https://github.com/nikhilsiem/learn-this' },
     ],
   },
+];
+
+// Earlier things I built on my own, with the month of their first commit.
+export const builds = [
+  { id: 'fire-cnn', name: 'Fire detection CNN', from: '2020-05', summary: 'A convolutional neural network that classifies fire in images, built in Jupyter.', repo: 'https://github.com/nikhilsiem/CNN_Fire-detection' },
+  { id: 'creative-loft', name: 'The Creative Loft', from: '2021-01', summary: 'A studio website in HTML, CSS, jQuery and PHP, built over 28 commits.', repo: 'https://github.com/nikhilsiem/creative-loft' },
+  { id: 'byer', name: 'Byer', from: '2021-04', summary: 'An Express backend for a shop: carts, orders, sellers and pooled buying, with AWS SNS notifications.', repo: 'https://github.com/nikhilsiem/byer-app' },
+  { id: 'leaderboard', name: 'Leaderboard', from: '2025-02', summary: 'A Vue 3 leaderboard with search over a ranked user table.', repo: 'https://github.com/nikhilsiem/leaderboard' },
+  { id: 'ai-chatbot', name: 'AI chatbot', from: '2025-12', summary: 'A full-stack chatbot on Groq with personality profiling and context-aware conversation.', repo: 'https://github.com/nikhilsiem/middleware-chatbot' },
+  { id: 'horse-race', name: 'Horse race', from: '2025-12', summary: 'A Vue 3 horse racing game built from composables, tested with Vitest.', repo: 'https://github.com/nikhilsiem/horse-race' },
 ];
 
 export const toolkit = [

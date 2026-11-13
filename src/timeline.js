@@ -21,7 +21,7 @@ function short(company, sector) {
   return company;
 }
 
-export function toItems(work, projects) {
+export function toItems(work, projects, builds = []) {
   const jobs = work.map(w => {
     const a = index(parse(w.from));
     const b = index(parse(w.to)) + 1;
@@ -41,21 +41,47 @@ export function toItems(work, projects) {
       width: b - a,
     };
   });
-  const own = projects.map((p, i) => ({
-    id: p.id,
+  const fmt = d => `${MONTHS[d.m - 1]} ${d.y}`;
+  const flagship = [...projects]
+    .sort((x, y) => x.from.localeCompare(y.from))
+    .map((p, i) => {
+      const a = index(parse(p.from));
+      return {
+        id: p.id,
+        lane: 'own',
+        kind: 'project',
+        row: i,
+        label: p.name,
+        title: p.name,
+        role: 'Built on my own',
+        period: `Since ${fmt(parse(p.from))}`,
+        length: `${length(p.from, null)} so far`,
+        years: fmt(parse(p.from)),
+        dims: p.dims.slice(0, 2),
+        summary: p.tagline,
+        left: a,
+        width: index(NOW) + 1 - a,
+      };
+    });
+  const seen = {};
+  const marks = builds.map(b => ({
+    nudge: (seen[b.from] = (seen[b.from] ?? -1) + 1),
+    id: b.id,
     lane: 'own',
-    row: i,
-    label: p.name,
-    title: p.name,
+    kind: 'mark',
+    label: b.name,
+    title: b.name,
     role: 'Built on my own',
-    period: '2026',
+    period: fmt(parse(b.from)),
     length: null,
-    years: '2026',
-    dims: p.dims.slice(0, 2),
-    summary: p.tagline,
-    left: index({ y: 2026, m: 1 }),
-    width: 12,
+    years: fmt(parse(b.from)),
+    dims: [],
+    summary: b.summary,
+    href: b.repo,
+    left: index(parse(b.from)),
+    width: 1,
   }));
+  const own = [...marks, ...flagship];
   return [...jobs, ...own];
 }
 

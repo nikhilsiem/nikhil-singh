@@ -83,7 +83,7 @@ Mode: Experience. Ambition shows as commitment to the drawing conventions (title
 ## Colors
 
 ### Primary
-- **Survey orange** `#ff5a1f`: reserved for the selected item, the current job's "now", and measurements (dimension lines, length brackets, the date guide, focus rings, text selection). Never decorative, never a fill for large areas.
+- **Survey orange** `#ff5a1f`: reserved for the selected item, the current job's "now", and measurements (dimension lines, length brackets, the date guide, focus rings, text selection). The one large orange field is the transient plotter band of the section transition; it never rests on screen.
 
 ### Neutral
 - **Drafting ground** `#10120f`: the sheet. Green-black, not slate.
@@ -143,7 +143,11 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Date guide: mouse only, a 60% orange hairline with an orange month label.
 - Selected item: orange outline and label, with a length bracket under it that scales in from the left.
 - Readout: ruled panel right of the name (below the timeline on phones), aria-live; title, role/period/length facts, one-line summary, up to two dimension lines, link to the details section. Content fades up 6px on change.
+- Own lane: a dashed thread runs from the first build (2020) to now; earlier public builds are 14px dashed marks at their first-commit month (hover/focus to read them, link to the repo); flagship projects are dashed boxes from their start month to now, staircased in rows with the label set to their left.
 - Phones: the timeline becomes a list of rows, each with a proportional bar on a 2020–2026 track.
+
+### Section transition
+- Scroll-linked (`src/useScrollPlot.js` writes `--p` 0→1 per section as its top travels from the viewport bottom to 40% from the top). Stage one: a solid survey-orange band wipes across the section head from the left. Stage two: the band pulls away to the right, revealing the heading outlined and at 125% width, which compresses to 62% and fills solid; the intro wipes in behind it. The contact email follows the same squeeze. Disabled under reduced motion.
 
 ## Do's and Don'ts
 
@@ -158,4 +162,4 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Don't put labels or numbers above headings.
 - Don't use Unicode glyphs as icons.
 - Don't scatter information across the page; selection detail lives in the readout.
-- Don't animate entries on scroll; the timeline reveal on load and the readout change are the only motion.
+- Don't add other scroll effects; the section plot transition, the timeline reveal on load and the readout change are the page's motion.

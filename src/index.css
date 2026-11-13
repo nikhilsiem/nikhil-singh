@@ -322,14 +322,38 @@ a {
   transition: border-color 160ms, background-color 160ms, color 160ms;
 }
 .tl-item + .tl-item { margin-left: 4px; width: calc(var(--w) - 4px); }
-.tl-item.own {
-  border-style: dashed;
-  top: calc(26px + var(--r) * 30px);
+.tl-lane.own .tl-lane-name { top: 12px; transform: none; }
+.tl-lane.own::before {
+  content: '';
+  position: absolute;
+  left: var(--thread);
+  right: 0;
+  top: 55px;
+  border-top: 1px dashed var(--dim);
+  opacity: 0.6;
+}
+.tl-item.own { border-style: dashed; margin-left: 0; }
+.tl-item.mark {
+  top: 48px;
   bottom: auto;
-  height: 26px;
-  padding: 0 8px;
-  margin-left: 0;
+  width: 14px;
+  height: 14px;
+  padding: 0;
+  margin-left: calc(var(--n) * 18px);
+}
+.tl-item.mark .tl-label { display: none; }
+.tl-item.project {
+  top: calc(12px + var(--r) * 30px);
+  bottom: auto;
+  height: 24px;
   width: var(--w);
+  min-width: 14px;
+  padding: 0;
+}
+.tl-item.project .tl-label {
+  position: absolute;
+  right: calc(100% + 8px);
+  font-size: 13px;
 }
 .tl-item.live small { color: var(--signal); }
 .tl-item:hover, .tl-item.on { background: var(--ground-2); }
@@ -348,9 +372,8 @@ a {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.tl-item.own .tl-label { font-size: 13px; }
 .tl-label small { font-stretch: 100%; font-weight: 400; font-size: 11px; color: var(--dim); text-transform: none; }
-.tl-item.own .tl-label small { display: none; }
+.tl-item.project .tl-label small { display: none; }
 .tl-track { display: none; }
 
 .tl-length {
@@ -612,6 +635,47 @@ a {
 .contact .title-block > *:nth-child(4n) { border-right: 0; }
 .contact .title-block .wide { grid-column: span 2; border-right: 1px solid var(--rule); }
 
+/* ── Section transition: an orange plotter band wipes over each section head,
+   then pulls away to reveal the heading, wide and outlined, snapping to solid. ── */
+
+.section { overflow-x: clip; }
+.section-head { position: relative; overflow-x: clip; }
+.plotting .section {
+  --a: clamp(0, calc(var(--p, 1) * 2.2), 1);
+  --b: clamp(0, calc(var(--p, 1) * 2.2 - 1.2), 1);
+}
+.plotting .section-head::before {
+  content: '';
+  position: absolute;
+  inset: -18px 0;
+  z-index: 2;
+  background: var(--signal);
+  clip-path: inset(0 calc((1 - var(--a)) * 100%) 0 calc(var(--b) * 100%));
+  pointer-events: none;
+}
+.plotting .section-head h2,
+.plotting .contact-mail {
+  font-stretch: calc(62% + 63% * (1 - var(--b)));
+  letter-spacing: calc((1 - var(--b)) * 0.06em);
+  color: color-mix(in srgb, var(--ink) calc(var(--b) * var(--b) * 100%), transparent);
+  -webkit-text-stroke: 1.5px var(--ink);
+  white-space: nowrap;
+}
+.plotting .section-head p { clip-path: inset(0 calc((1 - var(--b)) * 100%) 0 0); }
+.plotting .contact-mail { position: relative; }
+.plotting .section::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: var(--signal);
+  transform-origin: left;
+  transform: scaleX(var(--a));
+  opacity: calc((1 - var(--b)) * 3);
+}
+.plotting .section[data-plotted] .section-head h2,
+.plotting .section[data-plotted] .contact-mail { -webkit-text-stroke: 0; }
+
 /* ── Responsive ──────────────────────────────────────────── */
 
 @media (max-width: 1100px) {
@@ -646,11 +710,18 @@ a {
     width: 100%; height: 44px;
     margin: 0 0 6px;
     display: grid;
-    grid-template-columns: 52% 1fr;
+    grid-template-columns: 64% 1fr;
     gap: 10px;
     padding: 0 10px;
   }
-  .tl-item.own .tl-label small, .tl-label small { display: inline; }
+  .tl-item.own .tl-label small, .tl-label small, .tl-item.project .tl-label small { display: inline; }
+  .tl-item.mark, .tl-item.project { margin-left: 0; min-width: 0; }
+  .tl-item.mark .tl-label { display: flex; }
+  .tl-item.project .tl-label { position: static; }
+  .tl-lane.own::before { display: none; }
+  .tl-bar { min-width: 4px; }
+  .tl-item.mark { height: 36px; }
+  .tl-item.mark .tl-label { font-size: 13px; }
   .tl-track { display: block; position: relative; height: 6px; background: var(--grid); }
   .tl-bar { position: absolute; top: 0; bottom: 0; left: var(--l); width: var(--w); background: var(--ink-2); }
   .tl-item.on .tl-bar { background: var(--signal); }
