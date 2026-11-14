@@ -157,6 +157,9 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Sample data only, labelled on the stage; step copy carries the real facts and metrics.
 - Phones: the stage pins at the top with the active step's text as a caption beneath it; the step list becomes invisible scroll distance (still read by screen readers; the caption is aria-hidden).
 
+### Slide text in and out (all multi-slide chapters, desktop and phones)
+- `.text-flow` with scroll-linked `--in` / `--out` (0→1): lines rise in staggered (heading, then body, then metrics), un-blurring from 6px, and an orange 56px underline draws under the heading; on the way out they lift 22px and soften, top line first. Driven per step on desktop, from `t` for the phone caption and the pinned job header (which leaves at the end of its job and the next rises in), and per card on phones. Stage scenes cross-fade with a 14px rise, slight scale and blur (560ms). Reduced motion shows text static.
+
 ### Section transition
 - Scroll-linked (`src/useScrollPlot.js` writes `--p` 0→1 per section as its top travels from the viewport bottom to 40% from the top). Stage one: a solid survey-orange band wipes across the section head from the left. Stage two: the band pulls away to the right, revealing the heading outlined and at 125% width, which compresses to 62% and fills solid; the intro wipes in behind it. The contact email follows the same squeeze. Disabled under reduced motion.
 

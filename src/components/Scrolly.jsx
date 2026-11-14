@@ -79,20 +79,47 @@ function Pinned({ steps, Stage, mobile, note, size }) {
     if (!el) return;
     const line = window.innerHeight * 0.55;
     let next = 0;
-    [...el.querySelectorAll(':scope > .scrolly-steps > li')].forEach((li, i) => {
+    const calm = still();
+    const lis = [...el.querySelectorAll(':scope > .scrolly-steps > li')];
+    lis.forEach((li, i) => {
       const r = li.getBoundingClientRect();
-      if (r.top <= line) next = i + clamp((line - r.top) / r.height);
+      const local = (line - r.top) / r.height;
+      if (r.top <= line) next = i + clamp(local);
+      // text in as the step approaches the line, out once it is mostly past
+      const tin = calm ? 1 : clamp((local + 0.3) / 0.32);
+      const tout = calm || i === lis.length - 1 ? 0 : clamp((local - 0.78) / 0.24);
+      li.style.setProperty('--in', tin.toFixed(3));
+      li.style.setProperty('--out', tout.toFixed(3));
     });
     setT(clamp(next, 0, n));
   });
 
   const active = Math.min(n - 1, Math.floor(t));
+  const calm = still();
+  const k = t - active;
+  const cap = {
+    '--in': calm || active === 0 ? 1 : clamp(k / 0.2),
+    '--out': calm || active === n - 1 ? 0 : clamp((k - 0.8) / 0.2),
+  };
+  let grp = null;
+  if (steps[active].group) {
+    const key = steps[active].group.key;
+    let gs = active;
+    while (gs > 0 && steps[gs - 1].group?.key === key) gs -= 1;
+    let ge = active;
+    while (ge < n - 1 && steps[ge + 1].group?.key === key) ge += 1;
+    const g = (t - gs) / (ge - gs + 1);
+    grp = {
+      '--in': calm || gs === 0 ? 1 : clamp(g / 0.1),
+      '--out': calm || ge === n - 1 ? 0 : clamp((g - 0.92) / 0.08),
+    };
+  }
   return (
     <div className={`scrolly${mobile === 'caption' ? ' with-caption' : ''}${size ? ` ${size}` : ''}`} ref={ref}>
       <div className="scrolly-pin">
         {steps[active].group && (
           <div className="scrolly-group" aria-hidden="true">
-            <div key={steps[active].group.key} className="group-in">
+            <div className="group-in text-flow" style={grp}>
               <p className="group-title display">{steps[active].group.title}</p>
               <p className="group-meta">{steps[active].group.meta}</p>
             </div>
@@ -103,7 +130,7 @@ function Pinned({ steps, Stage, mobile, note, size }) {
           {note && <p className="stage-note">{note}</p>}
         </div>
         <div className="scrolly-caption" aria-hidden="true">
-          <div key={active} className="caption-in"><StepBody step={steps[active]} full={false} /></div>
+          <div className="text-flow" style={cap}><StepBody step={steps[active]} full={false} /></div>
         </div>
         <div className="scrolly-progress" aria-hidden="true">
           {steps.map((s, i) => (
@@ -114,7 +141,7 @@ function Pinned({ steps, Stage, mobile, note, size }) {
       </div>
       <ol className="scrolly-steps">
         {steps.map((s, i) => (
-          <li key={s.title} id={s.id} className={i === active ? 'on' : ''}>
+          <li key={s.title} id={s.id} className={`text-flow${i === active ? ' on' : ''}`}>
             <StepBody step={s} />
           </li>
         ))}
@@ -142,12 +169,16 @@ function Card({ step, i, Stage, note }) {
   const ref = useRef(null);
   const [k, setK] = useState(0);
   const [e, setE] = useState(1);
+  const [o, setO] = useState(0);
+  const body = useRef(null);
   useScrollMeasure(() => {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
     const vh = window.innerHeight;
     setK(clamp((vh * 0.9 - r.top) / (vh * 0.55)));
     setE(entrance(r));
+    const b = body.current?.getBoundingClientRect();
+    setO(b && !still() ? clamp((vh * 0.4 - b.bottom) / (vh * 0.3)) : 0);
   });
   return (
     <li ref={ref} id={step.id} className="scrolly-card" style={{ '--e': e, '--k': k }}>
@@ -155,7 +186,9 @@ function Card({ step, i, Stage, note }) {
         <Stage t={i + k * 0.999} />
       </div>
       {note && <p className="card-note">{note}</p>}
-      <div className="card-body"><StepBody step={step} groupLabel={false} /></div>
+      <div className="card-body text-flow" ref={body} style={{ '--in': e, '--out': o }}>
+        <StepBody step={step} groupLabel={false} />
+      </div>
     </li>
   );
 }
