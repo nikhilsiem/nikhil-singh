@@ -26,6 +26,7 @@ export function Readout({ item }) {
 export default function Timeline({ items, selected, onSelect }) {
   const trackRef = useRef(null);
   const [guide, setGuide] = useState(null);
+  const [earlier, setEarlier] = useState(false);
   const sel = items.find(i => i.id === selected);
 
   const onMove = e => {
@@ -71,9 +72,22 @@ export default function Timeline({ items, selected, onSelect }) {
           <span className="tl-lane-name">At work</span>
           {lane('work').map(Item)}
         </div>
-        <div className="tl-lane own" style={{ '--thread': pct(Math.min(...lane('own').map(i => i.left))) }}>
+        <div id="tl-own" className={`tl-lane own${earlier ? ' earlier' : ''}`} style={{ '--thread': pct(Math.min(...lane('own').map(i => i.left))) }}>
           <span className="tl-lane-name">On my own · {lane('own').length} builds since {START.y + Math.floor(Math.min(...lane('own').map(i => i.left)) / 12)}</span>
-          {lane('own').map(Item)}
+          {[...lane('own')].sort((a, b) => b.left - a.left).map(Item)}
+          {(() => {
+            const marks = lane('own').filter(i => i.kind === 'mark');
+            if (!marks.length) return null;
+            const from = Math.min(...marks.map(i => i.years.slice(-4)));
+            const to = Math.max(...marks.map(i => i.years.slice(-4)));
+            return (
+              <button type="button" className="tl-more" aria-expanded={earlier} aria-controls="tl-own"
+                onClick={() => setEarlier(v => !v)}>
+                {earlier ? 'Hide earlier builds' : `Show ${marks.length} earlier builds, ${from}–${to}`}
+                <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d={earlier ? 'M2 8 6 4l4 4' : 'M2 4l4 4 4-4'} /></svg>
+              </button>
+            );
+          })()}
         </div>
         {sel?.lane === 'work' && (
           <p key={sel.id} className="tl-length" style={{ '--l': pct(sel.left), '--w': pct(sel.width) }} aria-hidden="true">
