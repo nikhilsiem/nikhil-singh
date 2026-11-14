@@ -10,6 +10,14 @@ import { clamp } from '../motion';
 // plays as the card passes through the viewport.
 
 const NARROW = '(max-width: 760px)';
+const still = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// 0 → 1 as an element rises from the bottom edge to `span` of the viewport above it.
+function entrance(r, span = 0.38) {
+  if (still()) return 1;
+  const vh = window.innerHeight;
+  return clamp((vh - r.top) / (vh * span));
+}
 
 function useNarrow() {
   const [narrow, setNarrow] = useState(() => window.matchMedia(NARROW).matches);
@@ -94,7 +102,9 @@ function Pinned({ steps, Stage, mobile, note, size }) {
           <Stage t={t} />
           {note && <p className="stage-note">{note}</p>}
         </div>
-        <div className="scrolly-caption" aria-hidden="true"><StepBody step={steps[active]} full={false} /></div>
+        <div className="scrolly-caption" aria-hidden="true">
+          <div key={active} className="caption-in"><StepBody step={steps[active]} full={false} /></div>
+        </div>
         <div className="scrolly-progress" aria-hidden="true">
           {steps.map((s, i) => (
             <span key={s.title} className={`${i < active ? 'past' : i === active ? 'now' : ''}${s.groupStart && i > 0 ? ' gs' : ''}`}
@@ -113,17 +123,34 @@ function Pinned({ steps, Stage, mobile, note, size }) {
   );
 }
 
+function CardGroup({ group }) {
+  const ref = useRef(null);
+  const [e, setE] = useState(1);
+  useScrollMeasure(() => {
+    const r = ref.current?.getBoundingClientRect();
+    if (r) setE(entrance(r, 0.3));
+  });
+  return (
+    <li ref={ref} className="card-group" style={{ '--e': e }}>
+      <h3 className="display">{group.title}</h3>
+      <p className="group-meta">{group.meta}</p>
+    </li>
+  );
+}
+
 function Card({ step, i, Stage, note }) {
   const ref = useRef(null);
   const [k, setK] = useState(0);
+  const [e, setE] = useState(1);
   useScrollMeasure(() => {
     const r = ref.current?.getBoundingClientRect();
     if (!r) return;
     const vh = window.innerHeight;
     setK(clamp((vh * 0.9 - r.top) / (vh * 0.55)));
+    setE(entrance(r));
   });
   return (
-    <li ref={ref} id={step.id} className="scrolly-card">
+    <li ref={ref} id={step.id} className="scrolly-card" style={{ '--e': e, '--k': k }}>
       <div className="stage" aria-hidden="true">
         <Stage t={i + k * 0.999} />
       </div>
@@ -140,12 +167,7 @@ export default function Scrolly({ steps: raw, Stage, mobile = 'caption', note, s
     return (
       <ol className="scrolly-cards">
         {steps.flatMap((s, i) => [
-          s.groupStart && (
-            <li key={`g-${s.group.key}`} className="card-group">
-              <h3 className="display">{s.group.title}</h3>
-              <p className="group-meta">{s.group.meta}</p>
-            </li>
-          ),
+          s.groupStart && <CardGroup key={`g-${s.group.key}`} group={s.group} />,
           <Card key={s.title} step={s} i={i} Stage={Stage} note={i === 0 ? note : null} />,
         ].filter(Boolean))}
       </ol>

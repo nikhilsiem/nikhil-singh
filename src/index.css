@@ -791,6 +791,37 @@ a {
 .story .cursor-h { stroke: var(--signal); stroke-width: 1.5; }
 .story .ghost { opacity: 0.9; }
 
+/* phone scroll transitions: cards are plotted in as they arrive */
+.caption-in { animation: read-in 300ms var(--ease-out) both; }
+.scrolly-card { position: relative; }
+.scrolly-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -10px;
+  height: 2px;
+  background: var(--signal);
+  transform-origin: left;
+  transform: scaleX(var(--k, 1));
+}
+.scrolly-card .stage { clip-path: inset(0 calc((1 - var(--e, 1)) * 100%) 0 0); }
+.scrolly-card .card-body {
+  opacity: calc(0.15 + 0.85 * var(--e, 1));
+  transform: translateY(calc((1 - var(--e, 1)) * 28px));
+}
+.card-group h3 {
+  font-stretch: calc(62% + 63% * (1 - var(--e, 1)));
+  color: color-mix(in srgb, var(--ink) calc(var(--e, 1) * 100%), transparent);
+  -webkit-text-stroke: calc((1 - var(--e, 1)) * 1.5px) var(--ink);
+  white-space: nowrap;
+}
+.card-group { overflow-x: clip; }
+.card-group .group-meta { clip-path: inset(0 calc((1 - var(--e, 1)) * 100%) 0 0); }
+@media (prefers-reduced-motion: reduce) {
+  .caption-in { animation: none; }
+}
+
 /* story stages: shared drawing vocabulary */
 .scrolly:not(.with-caption) .scrolly-pin .stage:has(.story) { flex: none; aspect-ratio: 800 / 480; max-height: none; }
 .story .scene { animation: scene-in 320ms var(--ease-out) both; }
@@ -969,6 +1000,9 @@ a {
   .tl-item.project .tl-label { position: static; }
   .tl-lane.own::before { display: none; }
   .tl-bar { min-width: 4px; }
+  .dim-line { height: auto; align-items: baseline; padding-bottom: 16px; }
+  .dim-line b, .dim-line span { bottom: 0; white-space: normal; overflow: visible; }
+  .dim-line b { white-space: nowrap; flex-shrink: 0; }
   .scrolly { display: block; margin: 0 12px; }
   .with-caption .scrolly-pin { height: 100svh; padding: 12px 0 76px; z-index: 3; background: var(--ground); justify-content: flex-start; }
   .with-caption .stage { flex: 0 0 52svh; }
