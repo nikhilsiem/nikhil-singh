@@ -6,7 +6,7 @@ export const steps = [
   {
     title: 'A contractor asks for a measurement',
     meta: 'Senior Software Engineer · Feb 2025 – now',
-    body: 'Scout is SiteRecon’s AI measurement product. You ask in plain words, and an agent does the work on a live map. I build its React, Vite and TypeScript frontend.',
+    body: 'Scout is SiteRecon’s AI measurement product. You ask in plain words, and an agent does the work on a live map. I build its React, Vite and TypeScript frontend on the @siterecon/ui design system.',
   },
   {
     title: 'The agent talks to the map',
@@ -14,7 +14,7 @@ export const steps = [
   },
   {
     title: 'Measurements draw themselves',
-    body: 'Each command lands as a layer while the answer is still streaming, with per-layer model confidence from the new scout-core endpoint. I rebuilt this chat and map experience for phones, and added an account-less guest flow for trade-show visitors.',
+    body: 'Each command lands as a layer while the answer is still streaming, with per-layer model confidence from the new scout-core endpoint. I profiled and tuned deck.gl rendering so large polygon layers stay smooth, and rebuilt this chat and map experience for phones.',
     dims: [{ value: '+68%', label: 'mobile-generated measurements after the rebuild' }],
   },
   {
@@ -23,7 +23,7 @@ export const steps = [
   },
   {
     title: 'The measurement becomes a proposal',
-    body: 'Measurement, estimate and proposal run as one 8-stage flow over 6 backend services, ending in the Scout v2 order page and Stripe billing.',
+    body: 'Measurement, estimate and proposal run as one 8-stage flow over 6 backend services, ending in the Scout v2 order page and Stripe billing, with feature-flagged upsell nudges measured through Mixpanel and Segment event schemas.',
     dims: [{ value: '$30K+', label: 'new subscriptions in the first 3 months' }],
   },
   {

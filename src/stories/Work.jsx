@@ -43,36 +43,51 @@ function Strip({ t }) {
 }
 
 function Saathi({ k }) {
-  const clients = [{ y: 150, n: 'Student A' }, { y: 270, n: 'Student B' }, { y: 390, n: 'Mentor' }];
-  const hub = { x: 400, y: 270 };
-  const msgs = Math.round(span(k, 0.2, 0.95) * 5);
+  const schools = [{ x: 150, y: 150, n: 'Oakridge School' }, { x: 330, y: 250, n: 'St. Mary’s' }, { x: 150, y: 360, n: 'Delhi Public' }];
+  const parents = [[60, 230], [250, 110], [260, 400], [400, 140], [410, 380], [70, 420]];
+  const links = [[0, 1], [1, 2], [0, 2], [0, 0], [1, 3], [1, 4], [2, 2], [2, 5], [0, 1]];
+  const net = span(k, 0, 0.45);
+  const feed = Math.round(span(k, 0.35, 0.9) * 4);
+  const ph = span(k, 0.5, 0.95);
+  const posts = [
+    ['Inter-school debate', 'Oakridge School · open to Grades 9–12'],
+    ['Science fair partners wanted', 'St. Mary’s · 3 schools joined'],
+    ['Scholarship: Grade 11', 'Delhi Public · deadline 30 Jun'],
+    ['Parent volunteers for sports day', 'Oakridge School'],
+  ];
   return (
     <g>
-      <rect x="350" y="220" width="100" height="100" className="box on" />
-      <text x="400" y="262" className="lbl c">Django</text>
-      <text x="400" y="280" className="lbl c">Channels</text>
-      <text x="400" y="300" className="lbl c dim">+ Redis</text>
-      {clients.map((c, n) => {
-        const ph = (k * 3 + n * 0.33) % 1;
-        const out = n % 2 === 0;
-        const px = out ? lerp(200, 350, ph) : lerp(350, 200, ph);
-        const py = out ? lerp(c.y, hub.y, ph) : lerp(hub.y, c.y, ph);
+      <text x="60" y="90" className="lbl dim">A network of schools and parents · sample</text>
+      {[[0, 1], [1, 2], [0, 2]].map(([a, b], n) => (
+        <line key={n} x1={schools[a].x} y1={schools[a].y} x2={schools[b].x} y2={schools[b].y} className="wire"
+          pathLength="1" style={{ strokeDasharray: 1, strokeDashoffset: 1 - net }} />
+      ))}
+      {parents.map(([x, y], n) => {
+        const sc = schools[links[n + 3]?.[0] ?? 0];
         return (
-          <g key={c.n}>
-            <rect x="90" y={c.y - 22} width="110" height="44" className="box" />
-            <text x="145" y={c.y + 5} className="lbl c">{c.n}</text>
-            <line x1="200" y1={c.y} x2="350" y2={hub.y} className="wire" />
-            {k > 0.05 && <rect x={px - 5} y={py - 5} width="10" height="10" className="pkt" />}
+          <g key={n} style={{ opacity: net }}>
+            <line x1={sc.x} y1={sc.y} x2={x} y2={y} className="wire" />
+            <circle cx={x} cy={y} r="7" className="dot" />
           </g>
         );
       })}
-      <text x="275" y="200" className="lbl dim">WebSocket</text>
-      <rect x="500" y="110" width="230" height="330" className="box" />
-      <text x="515" y="135" className="lbl dim">Cohort chat · Vue 2</text>
-      {['Is the essay due Friday?', 'Yes, by 6 pm.', 'Can we review drafts?', 'Sharing mine now.', 'Thanks, everyone!'].slice(0, msgs).map((m, n) => (
-        <g key={m}>
-          <rect x={n % 2 ? 560 : 515} y={155 + n * 52} width="155" height="38" className={n % 2 ? 'bubble me' : 'bubble'} />
-          <text x={(n % 2 ? 560 : 515) + 10} y={179 + n * 52} className="lbl sm">{m}</text>
+      {schools.map(sc => (
+        <g key={sc.n}>
+          <rect x={sc.x - 62} y={sc.y - 18} width="124" height="36" className="box on" />
+          <text x={sc.x} y={sc.y + 5} className="lbl sm c">{sc.n}</text>
+        </g>
+      ))}
+      {k > 0.5 && k < 0.98 && (
+        <rect x={lerp(schools[1].x, 410, ph) - 5} y={lerp(schools[1].y, 380, ph) - 5} width="10" height="10" className="pkt" />
+      )}
+      <text x="300" y="455" className="lbl sm dim" style={{ opacity: span(k, 0.5, 0.7) }}>live message over WebSocket</text>
+      <rect x="480" y="70" width="260" height="370" className="box" />
+      <text x="496" y="96" className="lbl dim">Shared opportunities</text>
+      {posts.slice(0, feed).map(([t1, t2], n) => (
+        <g key={t1}>
+          <rect x="496" y={112 + n * 78} width="228" height="64" className={n === feed - 1 ? 'bubble me' : 'bubble'} />
+          <text x="508" y={138 + n * 78} className="lbl sm">{t1}</text>
+          <text x="508" y={158 + n * 78} className="lbl sm dim">{t2}</text>
         </g>
       ))}
     </g>
