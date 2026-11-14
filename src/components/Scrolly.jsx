@@ -41,9 +41,10 @@ function useScrollMeasure(measure) {
   }, []);
 }
 
-export function StepBody({ step, full = true }) {
+export function StepBody({ step, full = true, groupLabel = true }) {
   return (
     <>
+      {groupLabel && step.groupStart && <p className="sr-only">{step.group.title}, {step.group.meta}.</p>}
       <h3>{step.title}</h3>
       {step.meta && <p className="step-meta">{step.meta}</p>}
       {step.body && <p className="step-body">{step.body}</p>}
@@ -81,6 +82,14 @@ function Pinned({ steps, Stage, mobile, note, size }) {
   return (
     <div className={`scrolly${mobile === 'caption' ? ' with-caption' : ''}${size ? ` ${size}` : ''}`} ref={ref}>
       <div className="scrolly-pin">
+        {steps[active].group && (
+          <div className="scrolly-group" aria-hidden="true">
+            <div key={steps[active].group.key} className="group-in">
+              <p className="group-title display">{steps[active].group.title}</p>
+              <p className="group-meta">{steps[active].group.meta}</p>
+            </div>
+          </div>
+        )}
         <div className="stage" aria-hidden="true">
           <Stage t={t} />
           {note && <p className="stage-note">{note}</p>}
@@ -88,7 +97,7 @@ function Pinned({ steps, Stage, mobile, note, size }) {
         <div className="scrolly-caption" aria-hidden="true"><StepBody step={steps[active]} full={false} /></div>
         <div className="scrolly-progress" aria-hidden="true">
           {steps.map((s, i) => (
-            <span key={s.title} className={i < active ? 'past' : i === active ? 'now' : ''}
+            <span key={s.title} className={`${i < active ? 'past' : i === active ? 'now' : ''}${s.groupStart && i > 0 ? ' gs' : ''}`}
               style={i === active ? { '--k': t - active } : undefined} />
           ))}
         </div>
@@ -119,17 +128,26 @@ function Card({ step, i, Stage, note }) {
         <Stage t={i + k * 0.999} />
       </div>
       {note && <p className="card-note">{note}</p>}
-      <div className="card-body"><StepBody step={step} /></div>
+      <div className="card-body"><StepBody step={step} groupLabel={false} /></div>
     </li>
   );
 }
 
-export default function Scrolly({ steps, Stage, mobile = 'caption', note, size }) {
+export default function Scrolly({ steps: raw, Stage, mobile = 'caption', note, size }) {
   const narrow = useNarrow();
+  const steps = raw.map((s, i) => ({ ...s, groupStart: !!s.group && s.group.key !== raw[i - 1]?.group?.key }));
   if (narrow && mobile === 'cards') {
     return (
       <ol className="scrolly-cards">
-        {steps.map((s, i) => <Card key={s.title} step={s} i={i} Stage={Stage} note={i === 0 ? note : null} />)}
+        {steps.flatMap((s, i) => [
+          s.groupStart && (
+            <li key={`g-${s.group.key}`} className="card-group">
+              <h3 className="display">{s.group.title}</h3>
+              <p className="group-meta">{s.group.meta}</p>
+            </li>
+          ),
+          <Card key={s.title} step={s} i={i} Stage={Stage} note={i === 0 ? note : null} />,
+        ].filter(Boolean))}
       </ol>
     );
   }

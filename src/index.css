@@ -196,6 +196,7 @@ a {
   font-size: 13px;
   text-decoration: none;
   color: var(--ink-2);
+  white-space: nowrap;
   transition: color 160ms, background-color 160ms;
 }
 .nav a:hover { color: var(--ink); background: var(--ground-2); }
@@ -771,6 +772,25 @@ a {
 .scrolly.short .scrolly-steps > li { min-height: 62svh; }
 .scrolly.short .scrolly-pin { padding-top: 64px; }
 
+/* grouped chapters: the job's name and tenure stay pinned over its slides */
+.scrolly-group { margin-bottom: 14px; min-height: 64px; }
+.group-in { animation: read-in 320ms var(--ease-out) both; }
+.group-title { font-size: clamp(34px, 3.4vw, 52px); }
+.group-meta { margin-top: 6px; font-size: 14px; color: var(--dim); }
+.scrolly-progress span.gs { margin-left: 10px; }
+.card-group { padding-top: 12px; border-top: 1px solid var(--rule); }
+.card-group h3 { font-size: 40px; }
+.card-group + .scrolly-card { margin-top: -14px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.story .marble { fill: var(--signal); }
+.story .marble.dim { fill: var(--dim); }
+.story .row { fill: transparent; }
+.story .row.on { fill: var(--ground-2); }
+.story .dot.on { fill: var(--signal); }
+.story .diff { fill: color-mix(in srgb, var(--signal) 18%, transparent); stroke: var(--signal); stroke-width: 2; stroke-dasharray: 5 3; }
+.story .cursor-h { stroke: var(--signal); stroke-width: 1.5; }
+.story .ghost { opacity: 0.9; }
+
 /* story stages: shared drawing vocabulary */
 .scrolly:not(.with-caption) .scrolly-pin .stage:has(.story) { flex: none; aspect-ratio: 800 / 480; max-height: none; }
 .story .scene { animation: scene-in 320ms var(--ease-out) both; }
@@ -917,7 +937,8 @@ a {
 @media (max-width: 760px) {
   :root { --cols: 4; --row: 96px; --edge: 8px; }
   body { font-size: 16px; }
-  .nav { top: auto; bottom: calc(var(--edge) + 10px); right: 50%; transform: translateX(50%); }
+  .nav { top: auto; bottom: calc(var(--edge) + 10px); right: 50%; transform: translateX(50%); gap: 0; }
+  .nav a { padding: 6px 8px; font-size: 12.5px; }
   .hero { display: flex; flex-direction: column; min-height: 0; padding-top: 56px; }
   .hero-top { display: contents; }
   .hero-id { margin-bottom: 36px; }

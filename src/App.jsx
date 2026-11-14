@@ -100,7 +100,7 @@ function Before() {
         <h2 className="display" id="before-h">Before</h2>
         <p>The four years before SiteRecon, rewound: payments and design systems at Mastercard, and my first frontend job in EdTech.</p>
       </div>
-      <Scrolly steps={workStory.steps} Stage={workStory.Stage} mobile="cards"
+      <Scrolly steps={workStory.steps} Stage={workStory.Stage} mobile="cards" size="short"
         note="Illustrations with sample data" />
     </section>
   );
