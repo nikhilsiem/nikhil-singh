@@ -47,6 +47,7 @@ export default function Timeline({ items, selected, onSelect }) {
       className={`tl-item ${it.lane}${it.kind ? ` ${it.kind}` : ''}${it.live ? ' live' : ''}${it.id === selected ? ' on' : ''}`}
       style={{ '--l': pct(it.left), '--w': pct(it.width), '--r': it.row ?? 0, '--n': it.nudge ?? 0 }}
       aria-pressed={it.id === selected}
+      data-reveal="grow"
       aria-label={it.kind === 'mark' ? `${it.label}, ${it.years}` : undefined}
       onPointerEnter={e => e.pointerType === 'mouse' && onSelect(it.id)}
       onFocus={() => onSelect(it.id)}

@@ -139,7 +139,7 @@ function Toolkit() {
       </div>
       <dl className="key">
         {toolkit.map(([k, v]) => (
-          <div key={k} data-reveal="rise"><dt>{k}</dt><dd>{v}</dd></div>
+          <div key={k} data-reveal="rule"><dt>{k}</dt><dd>{v}</dd></div>
         ))}
       </dl>
       <ol className="notes" aria-label="Notes">
@@ -156,7 +156,7 @@ function Contact() {
         <h2 className="display" id="contact-h">Get in touch</h2>
         <p>Open to senior and staff frontend roles. Email is the fastest way to reach me.</p>
       </div>
-      <a className="contact-mail" href={`mailto:${person.email}`}>{person.email}</a>
+      <a className="contact-mail" href={`mailto:${person.email}`} data-reveal="type">{person.email}</a>
       <div className="contact-row" data-reveal="rise">
         <CopyEmail />
         <a href={person.linkedin} target="_blank" rel="noreferrer">LinkedIn<Arrow /></a>

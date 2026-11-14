@@ -260,6 +260,7 @@ a {
   .readout-body { animation: read-in 260ms var(--ease-out) both; }
 }
 @keyframes read-in { from { opacity: 0; transform: translateY(6px); } }
+@keyframes name-in { from { font-stretch: 125%; color: transparent; -webkit-text-stroke: 1.5px var(--ink); } 70% { -webkit-text-stroke: 1.5px var(--ink); } }
 .readout-title { font-size: clamp(36px, 3.6vw, 60px); }
 .readout-title.live { color: var(--signal); }
 .readout-facts {
@@ -820,7 +821,7 @@ a {
 .card-group { overflow-x: clip; }
 .card-group .group-meta { clip-path: inset(0 calc((1 - var(--e, 1)) * 100%) 0 0); }
 @media (prefers-reduced-motion: reduce) {
-  .caption-in { animation: none; }
+  .caption-in, .js .hero h1, .js .hero-line, .js .hero-cta { animation: none; }
 }
 
 /* story stages: shared drawing vocabulary */
@@ -1040,6 +1041,29 @@ a {
     transform: translateY(calc((1 - var(--e, 1)) * 20px));
   }
   [data-reveal='plot'] { overflow-x: clip; }
+
+  /* hero: the name is plotted on load, then the intro and actions rise */
+  .js .hero h1 { animation: name-in 1000ms var(--ease-out) both; }
+  .js .hero-line { animation: read-in 600ms var(--ease-out) 450ms both; }
+  .js .hero-cta { animation: read-in 600ms var(--ease-out) 600ms both; }
+  /* timeline rows: each bar travels from 2020 to its slot and stretches to its length */
+  [data-reveal='grow'] { opacity: calc(0.2 + 0.8 * var(--e, 1)); }
+  [data-reveal='grow'] .tl-bar {
+    left: calc(var(--l) * var(--e, 1));
+    transform-origin: left;
+    transform: scaleX(calc(0.15 + 0.85 * var(--e, 1)));
+  }
+  /* Now: the map opens like a lens */
+  [data-reveal='lens'] { clip-path: circle(calc(var(--e, 1) * 80%) at 50% 50%); }
+  /* toolkit: each legend row is ruled left to right as it rises */
+  [data-reveal='rule'] {
+    border-bottom-color: transparent;
+    background: linear-gradient(var(--rule), var(--rule)) left bottom / calc(var(--e, 1) * 100%) 1px no-repeat;
+    opacity: calc(0.12 + 0.88 * var(--e, 1));
+    transform: translateY(calc((1 - var(--e, 1)) * 22px));
+  }
+  /* contact: the address types itself out */
+  [data-reveal='type'] { clip-path: inset(-10% calc((1 - var(--e, 1)) * 100%) -10% 0); }
   .scrolly { display: block; margin: 0 12px; }
   .with-caption .scrolly-pin { height: 100svh; padding: 12px 0 76px; z-index: 3; background: var(--ground); justify-content: flex-start; }
   .with-caption .stage { flex: 0 0 52svh; }

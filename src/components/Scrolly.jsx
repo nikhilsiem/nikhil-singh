@@ -98,7 +98,7 @@ function Pinned({ steps, Stage, mobile, note, size }) {
             </div>
           </div>
         )}
-        <div className="stage" aria-hidden="true">
+        <div className="stage" aria-hidden="true" data-reveal="lens">
           <Stage t={t} />
           {note && <p className="stage-note">{note}</p>}
         </div>
