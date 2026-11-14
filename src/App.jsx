@@ -12,9 +12,9 @@ import * as workStory from './stories/Work';
 import { fixproof, tayyari, learnThis } from './stories/Projects';
 
 const sections = [
-  { id: 'scout', label: 'Scout' },
-  { id: 'work', label: 'Work' },
-  { id: 'projects', label: 'Projects' },
+  { id: 'siterecon', label: 'Now' },
+  { id: 'before', label: 'Before' },
+  { id: 'projects', label: 'On my own' },
   { id: 'toolkit', label: 'Toolkit' },
   { id: 'contact', label: 'Contact' },
 ];
@@ -80,12 +80,12 @@ function Hero() {
   );
 }
 
-function Scout() {
+function Now() {
   return (
-    <section className="section scout" id="scout" aria-labelledby="scout-h">
+    <section className="section" id="siterecon" aria-labelledby="now-h">
       <div className="section-head">
-        <h2 className="display" id="scout-h">Inside Scout</h2>
-        <p>The product I build at SiteRecon, one step at a time. Scroll to run it.</p>
+        <h2 className="display" id="now-h">Now</h2>
+        <p>At SiteRecon since February 2025, I build the frontend of Scout, an AI measurement product. Scroll to run it.</p>
       </div>
       <Scrolly steps={scoutStory.steps} Stage={scoutStory.Stage}
         note="Illustration with sample data, not the production interface" />
@@ -93,12 +93,12 @@ function Scout() {
   );
 }
 
-function Work() {
+function Before() {
   return (
-    <section className="section" id="work" aria-labelledby="work-h">
+    <section className="section" id="before" aria-labelledby="before-h">
       <div className="section-head">
-        <h2 className="display" id="work-h">Work</h2>
-        <p>Six years of frontends that carry real load, in order. Each step draws what the job was about.</p>
+        <h2 className="display" id="before-h">Before</h2>
+        <p>The four years before SiteRecon, rewound: payments and design systems at Mastercard, and my first frontend job in EdTech.</p>
       </div>
       <Scrolly steps={workStory.steps} Stage={workStory.Stage} mobile="cards"
         note="Illustrations with sample data" />
@@ -112,8 +112,8 @@ function Projects() {
   return (
     <section className="section" id="projects" aria-labelledby="projects-h">
       <div className="section-head">
-        <h2 className="display" id="projects-h">Built on<br />my own</h2>
-        <p>Products I designed and shipped end to end outside work, with agentic workflows (Claude Code) doing the heavy lifting under tests and written decisions.</p>
+        <h2 className="display" id="projects-h">On my own</h2>
+        <p>Outside work I keep shipping: nine public builds since 2020 on the timeline above. These three are the newest, each built end to end with agentic workflows (Claude Code) under tests and written decisions.</p>
       </div>
       {projects.map((p, i) => (
         <article key={p.id} id={p.id} className="project-chapter" aria-labelledby={`${p.id}-h`}>
@@ -133,8 +133,8 @@ function Toolkit() {
   return (
     <section className="section" id="toolkit" aria-labelledby="toolkit-h">
       <div className="section-head">
-        <h2 className="display" id="toolkit-h">Key</h2>
-        <p>What I reach for, grouped the way I use it.</p>
+        <h2 className="display" id="toolkit-h">Toolkit</h2>
+        <p>All of that, condensed: what I reach for, grouped the way I use it.</p>
       </div>
       <dl className="key">
         {toolkit.map(([k, v]) => (
@@ -178,13 +178,13 @@ export default function App() {
   useScrollPlot();
   return (
     <>
-      <a className="skip" href="#work">Skip to work</a>
+      <a className="skip" href="#siterecon">Skip to the story</a>
       <Nav />
       <Sheet>
         <Hero />
         <main>
-          <Scout />
-          <Work />
+          <Now />
+          <Before />
           <Projects />
           <Toolkit />
         </main>

@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { Dim } from './Parcel';
 import Arrow from './Arrow';
 import { START, SPAN, MONTHS, pct } from '../timeline';
 
@@ -14,13 +13,10 @@ export function Readout({ item }) {
           {item.length && <div><dt>Length</dt><dd>{item.length}</dd></div>}
         </dl>
         <p className="readout-summary">{item.summary}</p>
-        {item.dims.length > 0 && (
-          <div className="readout-dims">{item.dims.map(d => <Dim key={d.label} {...d} />)}</div>
-        )}
         {item.href ? (
           <a className="readout-link" href={item.href} target="_blank" rel="noreferrer">View the code<Arrow /></a>
         ) : (
-          <a className="readout-link" href={`#${item.id}`}>Read the details<Arrow dir="down" /></a>
+          <a className="readout-link" href={`#${item.id}`}>{item.lane === 'work' ? 'Go to this part of the story' : 'See how it works'}<Arrow dir="down" /></a>
         )}
       </div>
     </aside>

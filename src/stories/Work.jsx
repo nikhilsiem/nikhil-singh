@@ -5,7 +5,8 @@ import { Tick } from './marks';
 // Work, told in order. Each scene is a sample-data drawing of what the job was
 // about; the step text carries the real points from the resume.
 
-const jobs = [...work].reverse();
+// Latest first, as a rewind; SiteRecon has its own chapter.
+const jobs = work.filter(w => !w.live);
 const name = w => (w.company === 'Mastercard' ? (w.sector.startsWith('Design') ? 'Mastercard · DXP' : 'Mastercard · Commerce') : w.company.startsWith('Saathi') ? 'Saathi' : w.company);
 
 export const steps = jobs.map(w => ({
@@ -14,7 +15,6 @@ export const steps = jobs.map(w => ({
   meta: `${w.role} · ${w.period}`,
   dims: w.dims,
   points: w.points,
-  stack: w.stack,
 }));
 
 const month = s => (s ? (+s.slice(0, 4) - 2020) * 12 + (+s.slice(5, 7) - 1) : 82);
@@ -33,9 +33,9 @@ function Strip({ t }) {
         <text key={y} x={mx(n * 12) + 4} y="30">{y}</text>
       ))}
       <line x1={X0} y1="44" x2={X1} y2="44" className="rail" />
-      {jobs.map((w, n) => (
+      {work.map(w => (
         <rect key={w.id} x={mx(month(w.from)) + 1} y="38" width={mx(month(w.to)) - mx(month(w.from)) - 2} height="12"
-          className={n === i ? 'seg on' : n < i ? 'seg past' : 'seg'} />
+          className={w.id === j.id ? 'seg on' : 'seg'} />
       ))}
       <line x1={cursor} y1="32" x2={cursor} y2="58" className="cursor" />
     </g>
@@ -143,41 +143,11 @@ function Commerce({ k }) {
   );
 }
 
-function SiteRecon({ k }) {
-  const runs = Math.round(span(k, 0.05, 0.75) * 78);
-  const cov = span(k, 0.6, 0.95);
-  return (
-    <g>
-      <text x="70" y="100" className="lbl dim">Playwright · 39 specs on desktop and mobile CI</text>
-      <text x="70" y="128" className="lbl sm dim">desktop</text>
-      <text x="70" y="248" className="lbl sm dim">mobile</text>
-      {Array.from({ length: 78 }, (_, n) => {
-        const row = n < 39 ? 0 : 1;
-        const c = n % 39;
-        return (
-          <rect key={n} x={70 + (c % 13) * 30} y={138 + row * 120 + Math.floor(c / 13) * 30} width="22" height="22"
-            className={n < runs ? 'tile on' : 'tile'} />
-        );
-      })}
-      <text x="70" y="420" className="num">{runs}</text>
-      <text x="130" y="420" className="lbl">of 78 runs green</text>
-      <text x="520" y="128" className="lbl dim">Vitest · RTL · MSW</text>
-      <rect x="520" y="140" width="200" height="16" className="track" />
-      <rect x="520" y="140" width={200 * 0.75 * cov} height="16" className="bar" />
-      <text x="520" y="180" className="lbl">{cov > 0.98 ? '70–80% on critical flows' : 'coverage…'}</text>
-      <text x="520" y="240" className="lbl dim">Sentry tracing spans</text>
-      {[[0, 180], [20, 120], [40, 60], [70, 90]].map(([x, w], n) => (
-        <rect key={n} x={520 + x} y={254 + n * 22} width={w * span(k, 0.3 + n * 0.1, 0.6 + n * 0.1)} height="14" className="span" />
-      ))}
-    </g>
-  );
-}
-
-const scenes = [Saathi, Dxp, Commerce, SiteRecon];
+const scenes = { 'mastercard-commerce': Commerce, 'mastercard-dxp': Dxp, saathi: Saathi };
 
 export function Stage({ t }) {
-  const i = Math.min(scenes.length - 1, Math.floor(t));
-  const Scene = scenes[i];
+  const i = Math.min(jobs.length - 1, Math.floor(t));
+  const Scene = scenes[jobs[i].id];
   return (
     <svg className="stage-map story" viewBox="0 0 800 480" preserveAspectRatio="xMidYMid meet">
       <Strip t={t} />

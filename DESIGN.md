@@ -147,7 +147,7 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Phones: the timeline becomes a list of rows, each with a proportional bar on a 2020–2026 track.
 
 ### Scrollytelling chapters
-- Engine: `src/components/Scrolly.jsx` (pinned stage + steps; `mobile="caption"` or `mobile="cards"`). Stories live in `src/stories/` as `{ steps, Stage }`: Scout (5 steps), Work (4, one per job, with a 2020–2026 strip tracking the current job), and Fixproof, Tayyari, Learn This (3 each, `size="short"`).
+- Engine: `src/components/Scrolly.jsx` (pinned stage + steps; `mobile="caption"` or `mobile="cards"`). Stories live in `src/stories/` as `{ steps, Stage }`. The page is one journey and each fact appears once: hero (who, plus the timeline as an index; the readout has no metrics) → Now: Scout, the whole SiteRecon story in 6 steps → Before: Mastercard Commerce, Mastercard DXP, Saathi, latest first, with a 2020–2026 strip tracking the job → On my own: Fixproof, Tayyari, Learn This (3 steps each, `size="short"`) → Toolkit, the only place tools are listed → Contact.
 - Story stages share one SVG vocabulary (`.story`): ruled boxes, orange for what is live, measured or chosen, ink for done, dashed for locked or own; drawn tick, cross and lock marks (`src/stories/marks.jsx`), never glyphs.
 - Phones: Work and projects render each step as a card with its own stage that plays as the card crosses the viewport; Scout keeps the pinned caption mode.
 

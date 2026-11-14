@@ -19,7 +19,7 @@ export const work = [
     live: true,
     from: '2025-02',
     to: null,
-    summary: 'Frontend for Scout, where an AI agent drives a live deck.gl map over server-sent events.',
+    summary: 'AI property measurement. I build the frontend of Scout, its agent-driven product.',
     dims: [
       { value: '$30K+', label: 'new subscriptions in 3 months' },
       { value: '+68%', label: 'mobile-generated measurements' },
@@ -40,7 +40,7 @@ export const work = [
     sector: 'Cloud commerce and payments',
     from: '2023-07',
     to: '2025-01',
-    summary: 'A role-based Angular portal for partners and merchants, held to CI performance budgets.',
+    summary: 'Payments and cloud commerce: the partner and merchant portal.',
     dims: [
       { value: 'Many → 1', label: 'legacy micro-frontends merged into one Angular codebase' },
       { value: '4–6', label: 'engineers in the squad I ran sprint planning for' },
@@ -60,7 +60,7 @@ export const work = [
     sector: 'Design systems and developer tooling',
     from: '2021-10',
     to: '2023-06',
-    summary: 'The DXP design system for 200+ teams, and Design Studio, a drag-and-drop app builder.',
+    summary: 'Design systems and internal tooling for product teams across the company.',
     dims: [
       { value: '120+', label: 'web components, used by 200+ product teams' },
       { value: '2 wk → 20 min', label: 'to build an enterprise form' },
@@ -80,7 +80,7 @@ export const work = [
     sector: 'EdTech',
     from: '2020-07',
     to: '2021-09',
-    summary: 'A Vue 2 frontend built from scratch, and real-time cohort chat over WebSockets.',
+    summary: 'EdTech. My first frontend job, building a student platform from scratch.',
     dims: [],
     points: [
       'Architected a Vue 2 frontend from scratch on a Django REST API, translating Figma designs into pixel-accurate interfaces.',

@@ -772,7 +772,7 @@ a {
 .scrolly.short .scrolly-pin { padding-top: 64px; }
 
 /* story stages: shared drawing vocabulary */
-.scrolly-pin .stage:has(.story) { flex: none; aspect-ratio: 800 / 480; max-height: none; }
+.scrolly:not(.with-caption) .scrolly-pin .stage:has(.story) { flex: none; aspect-ratio: 800 / 480; max-height: none; }
 .story .scene { animation: scene-in 320ms var(--ease-out) both; }
 @keyframes scene-in { from { opacity: 0; } }
 .story text { font-family: var(--display); font-variant-numeric: tabular-nums; }
