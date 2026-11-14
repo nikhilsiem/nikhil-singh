@@ -1003,6 +1003,24 @@ a {
   .dim-line { height: auto; align-items: baseline; padding-bottom: 16px; }
   .dim-line b, .dim-line span { bottom: 0; white-space: normal; overflow: visible; }
   .dim-line b { white-space: nowrap; flex-shrink: 0; }
+  .card-group h3 { font-size: min(40px, 8.6vw); }
+
+  /* phone reveals for everything outside the story cards */
+  [data-reveal='rise'] {
+    opacity: calc(0.12 + 0.88 * var(--e, 1));
+    transform: translateY(calc((1 - var(--e, 1)) * 26px));
+  }
+  [data-reveal='wipe'] { clip-path: inset(0 calc((1 - var(--e, 1)) * 100%) 0 0); }
+  [data-reveal='plot'] h3 {
+    font-stretch: calc(62% + 63% * (1 - var(--e, 1)));
+    color: color-mix(in srgb, var(--ink) calc(var(--e, 1) * 100%), transparent);
+    -webkit-text-stroke: calc((1 - var(--e, 1)) * 1.5px) var(--ink);
+  }
+  [data-reveal='plot'] .tag {
+    opacity: calc(0.12 + 0.88 * var(--e, 1));
+    transform: translateY(calc((1 - var(--e, 1)) * 20px));
+  }
+  [data-reveal='plot'] { overflow-x: clip; }
   .scrolly { display: block; margin: 0 12px; }
   .with-caption .scrolly-pin { height: 100svh; padding: 12px 0 76px; z-index: 3; background: var(--ground); justify-content: flex-start; }
   .with-caption .stage { flex: 0 0 52svh; }

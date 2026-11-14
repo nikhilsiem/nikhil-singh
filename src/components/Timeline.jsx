@@ -4,7 +4,7 @@ import { START, SPAN, MONTHS, pct } from '../timeline';
 
 export function Readout({ item }) {
   return (
-    <aside className="readout" aria-live="polite" aria-label="Selected work">
+    <aside className="readout" aria-live="polite" aria-label="Selected work" data-reveal="wipe">
       <div key={item.id} className="readout-body">
         <h2 className={`readout-title display${item.live ? ' live' : ''}`}>{item.title}</h2>
         <dl className="readout-facts">

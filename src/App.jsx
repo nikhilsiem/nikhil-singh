@@ -5,6 +5,7 @@ import Parcel from './components/Parcel';
 import Timeline, { Readout } from './components/Timeline';
 import { toItems } from './timeline';
 import useScrollPlot from './useScrollPlot';
+import useReveal from './useReveal';
 import Arrow from './components/Arrow';
 import Scrolly from './components/Scrolly';
 import * as scoutStory from './stories/Scout';
@@ -117,7 +118,7 @@ function Projects() {
       </div>
       {projects.map((p, i) => (
         <article key={p.id} id={p.id} className="project-chapter" aria-labelledby={`${p.id}-h`}>
-          <Parcel kind="own" i={i} className="project-head">
+          <Parcel kind="own" i={i} className="project-head" data-reveal="plot">
             <h3 className="display" id={`${p.id}-h`}>{p.name}{p.aka && <small>also called {p.aka}</small>}</h3>
             <p className="tag">{p.tagline}</p>
           </Parcel>
@@ -138,11 +139,11 @@ function Toolkit() {
       </div>
       <dl className="key">
         {toolkit.map(([k, v]) => (
-          <div key={k}><dt>{k}</dt><dd>{v}</dd></div>
+          <div key={k} data-reveal="rise"><dt>{k}</dt><dd>{v}</dd></div>
         ))}
       </dl>
       <ol className="notes" aria-label="Notes">
-        {notes.map(n => <li key={n}>{n}</li>)}
+        {notes.map(n => <li key={n} data-reveal="rise">{n}</li>)}
       </ol>
     </section>
   );
@@ -156,13 +157,13 @@ function Contact() {
         <p>Open to senior and staff frontend roles. Email is the fastest way to reach me.</p>
       </div>
       <a className="contact-mail" href={`mailto:${person.email}`}>{person.email}</a>
-      <div className="contact-row">
+      <div className="contact-row" data-reveal="rise">
         <CopyEmail />
         <a href={person.linkedin} target="_blank" rel="noreferrer">LinkedIn<Arrow /></a>
         <a href={person.github} target="_blank" rel="noreferrer">GitHub<Arrow /></a>
         <a href={`tel:${person.phone.replace(/\s/g, '')}`}>{person.phone}</a>
       </div>
-      <dl className="title-block" aria-label="Sheet details">
+      <dl className="title-block" aria-label="Sheet details" data-reveal="wipe">
         <div className="wide"><dt>Drawn by</dt><dd><b>{person.name}</b></dd></div>
         <div><dt>Location</dt><dd><b>{person.location}</b></dd></div>
         <div><dt>Revised</dt><dd><b>Nov 2026</b></dd></div>
@@ -176,6 +177,7 @@ function Contact() {
 
 export default function App() {
   useScrollPlot();
+  useReveal();
   return (
     <>
       <a className="skip" href="#siterecon">Skip to the story</a>
