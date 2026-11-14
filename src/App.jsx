@@ -1,12 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import { person, work, projects, builds, toolkit, notes } from './content';
 import Sheet from './components/Sheet';
-import Parcel, { Dim } from './components/Parcel';
+import Parcel from './components/Parcel';
 import Timeline, { Readout } from './components/Timeline';
 import { toItems } from './timeline';
 import useScrollPlot from './useScrollPlot';
 import Arrow from './components/Arrow';
 import Scrolly from './components/Scrolly';
+import * as scoutStory from './stories/Scout';
+import * as workStory from './stories/Work';
+import { fixproof, tayyari, learnThis } from './stories/Projects';
 
 const sections = [
   { id: 'scout', label: 'Scout' },
@@ -84,7 +87,8 @@ function Scout() {
         <h2 className="display" id="scout-h">Inside Scout</h2>
         <p>The product I build at SiteRecon, one step at a time. Scroll to run it.</p>
       </div>
-      <Scrolly />
+      <Scrolly steps={scoutStory.steps} Stage={scoutStory.Stage}
+        note="Illustration with sample data, not the production interface" />
     </section>
   );
 }
@@ -94,28 +98,15 @@ function Work() {
     <section className="section" id="work" aria-labelledby="work-h">
       <div className="section-head">
         <h2 className="display" id="work-h">Work</h2>
-        <p>Six years of frontends that carry real load: an AI map product, payments portals, and a design system other teams build on.</p>
+        <p>Six years of frontends that carry real load, in order. Each step draws what the job was about.</p>
       </div>
-      <ol>
-        {work.map(job => (
-          <li key={job.id} id={job.id} className={`entry${job.live ? ' live' : ''}`}>
-            <div className="entry-id">
-              <h3 className="display">{job.company}</h3>
-              <p className="entry-meta">{job.role}<span>{job.period} · {job.sector}</span></p>
-            </div>
-            <div className="entry-body">
-              {job.dims.length > 0 && (
-                <div className="entry-dims">{job.dims.map(d => <Dim key={d.label} {...d} />)}</div>
-              )}
-              <ul className="points">{job.points.map(p => <li key={p}>{p}</li>)}</ul>
-              <p className="stack">{job.stack}</p>
-            </div>
-          </li>
-        ))}
-      </ol>
+      <Scrolly steps={workStory.steps} Stage={workStory.Stage} mobile="cards"
+        note="Illustrations with sample data" />
     </section>
   );
 }
+
+const stories = { fixproof, tayyari, 'learn-this': learnThis };
 
 function Projects() {
   return (
@@ -125,25 +116,14 @@ function Projects() {
         <p>Products I designed and shipped end to end outside work, with agentic workflows (Claude Code) doing the heavy lifting under tests and written decisions.</p>
       </div>
       {projects.map((p, i) => (
-        <Parcel as="article" key={p.id} id={p.id} kind="own" i={i} className="project" aria-labelledby={`${p.id}-h`}>
-          <h3 className="display" id={`${p.id}-h`}>{p.name}{p.aka && <small>also called {p.aka}</small>}</h3>
-          <div>
+        <article key={p.id} id={p.id} className="project-chapter" aria-labelledby={`${p.id}-h`}>
+          <Parcel kind="own" i={i} className="project-head">
+            <h3 className="display" id={`${p.id}-h`}>{p.name}{p.aka && <small>also called {p.aka}</small>}</h3>
             <p className="tag">{p.tagline}</p>
-            <p className="lede">{p.body}</p>
-            <div className="entry-dims">{p.dims.map(d => <Dim key={d.label} {...d} />)}</div>
-          </div>
-          <div>
-            <ul className="points">{p.points.map(t => <li key={t}>{t}</li>)}</ul>
-            <p className="stack">{p.stack}</p>
-            {p.links.length > 0 ? (
-              <p className="project-links">
-                {p.links.map(l => <a key={l.href} href={l.href} target="_blank" rel="noreferrer">{l.label}<Arrow /></a>)}
-              </p>
-            ) : (
-              <p className="project-links private">Private repository. Happy to walk through the code on a call.</p>
-            )}
-          </div>
-        </Parcel>
+          </Parcel>
+          <Scrolly steps={stories[p.id].steps} Stage={stories[p.id].Stage} mobile="cards" size="short"
+            note="Illustration with sample data" />
+        </article>
       ))}
     </section>
   );

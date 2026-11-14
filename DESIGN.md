@@ -146,7 +146,12 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Own lane: a dashed thread runs from the first build (2020) to now; earlier public builds are 14px dashed marks at their first-commit month (hover/focus to read them, link to the repo); flagship projects are dashed boxes from their start month to now, staircased in rows with the label set to their left.
 - Phones: the timeline becomes a list of rows, each with a proportional bar on a 2020–2026 track.
 
-### Scrollytelling chapter (Inside Scout)
+### Scrollytelling chapters
+- Engine: `src/components/Scrolly.jsx` (pinned stage + steps; `mobile="caption"` or `mobile="cards"`). Stories live in `src/stories/` as `{ steps, Stage }`: Scout (5 steps), Work (4, one per job, with a 2020–2026 strip tracking the current job), and Fixproof, Tayyari, Learn This (3 each, `size="short"`).
+- Story stages share one SVG vocabulary (`.story`): ruled boxes, orange for what is live, measured or chosen, ink for done, dashed for locked or own; drawn tick, cross and lock marks (`src/stories/marks.jsx`), never glyphs.
+- Phones: Work and projects render each step as a card with its own stage that plays as the card crosses the viewport; Scout keeps the pinned caption mode.
+
+#### Inside Scout
 - `src/components/Scrolly.jsx`: a sticky stage (columns 1–7, 100svh) with five text steps scrolling in columns 9–12. `t` runs 0→5 from which step has crossed 55% of the viewport plus progress through it; every stage element is a pure function of `t`, so scrolling back rewinds exactly.
 - Stage vocabulary stays in-world: lot and house in ink line-work, measured layers in survey orange (lawn hatched, driveway dashed), the cut line in orange, panels as ruled boxes (command log → undo stack → estimate), a segmented progress rule under the stage.
 - Sample data only, labelled on the stage; step copy carries the real facts and metrics.
