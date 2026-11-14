@@ -6,8 +6,10 @@ import Timeline, { Readout } from './components/Timeline';
 import { toItems } from './timeline';
 import useScrollPlot from './useScrollPlot';
 import Arrow from './components/Arrow';
+import Scrolly from './components/Scrolly';
 
 const sections = [
+  { id: 'scout', label: 'Scout' },
   { id: 'work', label: 'Work' },
   { id: 'projects', label: 'Projects' },
   { id: 'toolkit', label: 'Toolkit' },
@@ -72,6 +74,18 @@ function Hero() {
       </div>
       <Timeline items={items} selected={selected} onSelect={setSelected} />
     </header>
+  );
+}
+
+function Scout() {
+  return (
+    <section className="section scout" id="scout" aria-labelledby="scout-h">
+      <div className="section-head">
+        <h2 className="display" id="scout-h">Inside Scout</h2>
+        <p>The product I build at SiteRecon, one step at a time. Scroll to run it.</p>
+      </div>
+      <Scrolly />
+    </section>
   );
 }
 
@@ -189,6 +203,7 @@ export default function App() {
       <Sheet>
         <Hero />
         <main>
+          <Scout />
           <Work />
           <Projects />
           <Toolkit />

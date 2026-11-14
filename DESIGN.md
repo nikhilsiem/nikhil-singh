@@ -146,6 +146,12 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - Own lane: a dashed thread runs from the first build (2020) to now; earlier public builds are 14px dashed marks at their first-commit month (hover/focus to read them, link to the repo); flagship projects are dashed boxes from their start month to now, staircased in rows with the label set to their left.
 - Phones: the timeline becomes a list of rows, each with a proportional bar on a 2020–2026 track.
 
+### Scrollytelling chapter (Inside Scout)
+- `src/components/Scrolly.jsx`: a sticky stage (columns 1–7, 100svh) with five text steps scrolling in columns 9–12. `t` runs 0→5 from which step has crossed 55% of the viewport plus progress through it; every stage element is a pure function of `t`, so scrolling back rewinds exactly.
+- Stage vocabulary stays in-world: lot and house in ink line-work, measured layers in survey orange (lawn hatched, driveway dashed), the cut line in orange, panels as ruled boxes (command log → undo stack → estimate), a segmented progress rule under the stage.
+- Sample data only, labelled on the stage; step copy carries the real facts and metrics.
+- Phones: the stage pins at the top with the active step's text as a caption beneath it; the step list becomes invisible scroll distance (still read by screen readers; the caption is aria-hidden).
+
 ### Section transition
 - Scroll-linked (`src/useScrollPlot.js` writes `--p` 0→1 per section as its top travels from the viewport bottom to 40% from the top). Stage one: a solid survey-orange band wipes across the section head from the left. Stage two: the band pulls away to the right, revealing the heading outlined and at 125% width, which compresses to 62% and fills solid; the intro wipes in behind it. The contact email follows the same squeeze. Disabled under reduced motion.
 
