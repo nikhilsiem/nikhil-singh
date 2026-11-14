@@ -1,7 +1,13 @@
 import { useEffect } from 'react';
 
-// Writes --p (0 → 1) on every .section as it travels from the bottom of the
-// viewport to 40% from the top. CSS turns that into the section transition.
+const smooth = v => {
+  const t = Math.min(1, Math.max(0, v));
+  return t * t * (3 - 2 * t);
+};
+
+// Writes --p (0 → 1, eased) on every .section as it arrives from the bottom of
+// the viewport, and --x (0 → 1, eased) as its end leaves the top. CSS turns
+// them into the arrival sweep and the hand-off fade.
 export default function useScrollPlot() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
@@ -11,10 +17,12 @@ export default function useScrollPlot() {
       frame = 0;
       const vh = window.innerHeight;
       for (const el of sections) {
-        const top = el.getBoundingClientRect().top;
-        const p = Math.min(1, Math.max(0, (vh - top) / (vh * 0.6)));
-        el.style.setProperty('--p', p.toFixed(3));
-        el.toggleAttribute('data-plotted', p >= 1);
+        const r = el.getBoundingClientRect();
+        // eased arrival over most of a viewport, and an eased fade as it leaves
+        const p = smooth((vh - r.top) / (vh * 0.8));
+        const x = smooth((vh * 0.45 - r.bottom) / (vh * 0.45));
+        el.style.setProperty('--p', p.toFixed(4));
+        el.style.setProperty('--x', x.toFixed(4));
       }
     };
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(update); };

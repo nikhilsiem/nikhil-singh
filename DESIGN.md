@@ -161,7 +161,7 @@ All corners square. Strokes: 1.5px for parcels and arrows, 1–1.25px for rules 
 - `.text-flow` with scroll-linked `--in` / `--out` (0→1): lines rise in staggered (heading, then body, then metrics), un-blurring from 6px, and an orange 56px underline draws under the heading; on the way out they lift 22px and soften, top line first. Driven per step on desktop, from `t` for the phone caption and the pinned job header (which leaves at the end of its job and the next rises in), and per card on phones. Stage scenes cross-fade with a 14px rise, slight scale and blur (560ms). Reduced motion shows text static.
 
 ### Section transition
-- Scroll-linked (`src/useScrollPlot.js` writes `--p` 0→1 per section as its top travels from the viewport bottom to 40% from the top). Stage one: a solid survey-orange band wipes across the section head from the left. Stage two: the band pulls away to the right, revealing the heading outlined and at 125% width, which compresses to 62% and fills solid; the intro wipes in behind it. The contact email follows the same squeeze. Disabled under reduced motion.
+- Scroll-linked and eased (`src/useScrollPlot.js` writes smoothstep `--p` as a section arrives over ~80% of the viewport, and `--x` as its end leaves the top). A feathered survey-orange band sweeps across the section head and pulls away (its two stages overlap); the heading settles from 125% width, outlined and slightly blurred, to 62% solid, with the outline thinning continuously; the intro fades and rises in; a 1px orange rule draws along the section top. The outgoing section's content fades to 25% as it leaves, so sections overlap rather than cut. The contact email follows the same squeeze. Disabled under reduced motion.
 
 ## Do's and Don'ts
 
